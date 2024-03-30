@@ -1,10 +1,10 @@
 # Личный проект «Что посмотреть»
 
 * Студент: [Andrey Vetrov](https://up.htmlacademy.ru/react-individual/2/user/1691655).
-* Наставник: `Неизвестно`.
+* Наставник: [Глеб Клецков] (https://htmlacademy.ru/profile/id1487865).
 
 ---
-
+`
 _Не удаляйте и не изменяйте папки и файлы:_
 _`.editorconfig`, `.gitattributes`, `.gitignore`._
 
