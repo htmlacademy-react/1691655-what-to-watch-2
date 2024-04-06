@@ -1,4 +1,10 @@
+import { useParams } from "react-router-dom";
+
 function FilmPage(): JSX.Element {
+  const param = useParams();
+
+  console.log(param.id);
+  
   return (
     <>
       <section className="film-card film-card--full">
