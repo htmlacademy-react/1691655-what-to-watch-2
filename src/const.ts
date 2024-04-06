@@ -1,3 +1,3 @@
-export const Setting = {
-  filmCardsNumber: 20,
+export const enum Setting {
+  filmCardsNumber = 20,
 };

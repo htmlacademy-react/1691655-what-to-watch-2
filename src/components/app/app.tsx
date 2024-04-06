@@ -1,4 +1,4 @@
-import WelcomeScreen from '../../pages/welcome-screen/welcome-screen';
+import WelcomePage from '../../pages/welcome-page/welcome-screen';
 
 type AppScreenProps = {
   filmCardsNumber: number;
@@ -6,7 +6,7 @@ type AppScreenProps = {
 
 function App({ filmCardsNumber }: AppScreenProps): JSX.Element {
   return (
-    <WelcomeScreen filmCardsNumber={filmCardsNumber} />
+    <WelcomePage filmCardsNumber={filmCardsNumber} />
   );
 }
 
