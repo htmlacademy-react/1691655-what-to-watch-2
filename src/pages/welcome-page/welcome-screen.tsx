@@ -2,12 +2,12 @@ type WecomeScreenProps = {
   filmCardsNumber: number;
 }
 
-function WelcomeScreen({ filmCardsNumber }: WecomeScreenProps): JSX.Element {
+function WelcomePage({ filmCardsNumber }: WecomeScreenProps): JSX.Element {
   const filmCardsList = [];
 
   for (let i = 0; i < filmCardsNumber; i++) {
     filmCardsList.push(
-      <article className="small-film-card catalog__films-card">
+      <article key={i} className="small-film-card catalog__films-card">
         <div className="small-film-card__image">
           <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
         </div>
@@ -147,4 +147,4 @@ function WelcomeScreen({ filmCardsNumber }: WecomeScreenProps): JSX.Element {
   );
 }
 
-export default WelcomeScreen;
+export default WelcomePage;
