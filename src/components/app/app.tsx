@@ -8,23 +8,30 @@ import PlayerPage from '../../pages/player-page/player-page';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
+import { Film_Briefly, Film_In_Details } from '../../types/film';
 
 type AppScreenProps = {
   filmCardsNumber: number;
+  filmsBrieflyList: Film_Briefly[];
+  filmsInDetailsList: Film_In_Details[];
 }
 
-function App({ filmCardsNumber }: AppScreenProps): JSX.Element {
+function App({ filmCardsNumber, filmsBrieflyList, filmsInDetailsList }: AppScreenProps): JSX.Element {
+  const favoriteFilmsInDetails = filmsInDetailsList.filter(film => film.isFavorite);
+  const findBrieflyFilmById = (id: string) => filmsBrieflyList.find(brieflyFilm => brieflyFilm.id === id) as Film_Briefly;
+  const favoriteBrieflyFilms = favoriteFilmsInDetails.map(film => findBrieflyFilmById(film.id));
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Root} element={<WelcomePage filmCardsNumber={filmCardsNumber} />} />
+        <Route path={AppRoute.Root} element={<WelcomePage filmCardsNumber={filmCardsNumber} filmsList={filmsBrieflyList} />} />
         <Route path={AppRoute.Login} element={<SignInPage />}/>
         <Route path={AppRoute.MyList} element=
           {
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
+              authorizationStatus={AuthorizationStatus.Auth}
             >
-              <MyListPage />
+              <MyListPage favoriteFilmsList = {favoriteBrieflyFilms}/>
             </PrivateRoute>
           }
         />

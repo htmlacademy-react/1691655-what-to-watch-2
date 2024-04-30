@@ -1,22 +1,13 @@
+import FilmsList from "../../components/films-list";
+import { Film_Briefly } from "../../types/film";
+
 type WecomeScreenProps = {
   filmCardsNumber: number;
+  filmsList: Film_Briefly[];
 }
 
-function WelcomePage({ filmCardsNumber }: WecomeScreenProps): JSX.Element {
-  const filmCardsList = [];
-
-  for (let i = 0; i < filmCardsNumber; i++) {
-    filmCardsList.push(
-      <article key={i} className="small-film-card catalog__films-card">
-        <div className="small-film-card__image">
-          <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
-        </div>
-        <h3 className="small-film-card__title">
-          <a className="small-film-card__link" href="film-page.html">Fantastic Beasts: The Crimes of Grindelwald</a>
-        </h3>
-      </article>
-    );
-  }
+function WelcomePage({ filmCardsNumber, filmsList }: WecomeScreenProps): JSX.Element {
+  
   return (
     <>
       <section className="film-card">
@@ -116,13 +107,9 @@ function WelcomePage({ filmCardsNumber }: WecomeScreenProps): JSX.Element {
               <a href="#" className="catalog__genres-link">Thrillers</a>
             </li>
           </ul>
-
-          <div className="catalog__films-list">
-            {
-              filmCardsList
-            }
-          </div>
-
+          
+          <FilmsList filmCardsNumber = {filmCardsNumber} filmsList={filmsList} />
+            
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
           </div>
