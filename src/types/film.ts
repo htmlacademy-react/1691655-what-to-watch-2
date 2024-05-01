@@ -1,4 +1,4 @@
-export type Film_Briefly = {
+export type FilmBriefly = {
     id: string;
     name: string;
     previewImage: string;
@@ -6,7 +6,7 @@ export type Film_Briefly = {
     genre: string;
 }
 
-export type Film_In_Details = {
+export type FilmInDetails = {
     id: string;
     name: string;
     posterImage: string;

@@ -1,26 +1,38 @@
-function AddReviewPage(): JSX.Element {
+import { Link, useParams } from 'react-router-dom';
+import { FilmInDetails } from '../../types/film';
+import { useState } from 'react';
+
+type AddReviewPageProps = {
+  filmsInDetailsList: FilmInDetails[];
+}
+
+function AddReviewPage({filmsInDetailsList}: AddReviewPageProps): JSX.Element {
+  const { id } = useParams();
+  const [reviewText, setReviewText] = useState('');
+  const currentFilm = filmsInDetailsList.find((film) => film.id === id) as FilmInDetails;
+
   return (
-    <section className="film-card film-card--full">
+    <section className="film-card film-card--full" id={reviewText}>
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={currentFilm.backgroundImage} alt="The Grand Budapest Hotel" />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header">
           <div className="logo">
-            <a href="main.html" className="logo__link">
+            <Link to="/" className="logo__link">
               <span className="logo__letter logo__letter--1">W</span>
               <span className="logo__letter logo__letter--2">T</span>
               <span className="logo__letter logo__letter--3">W</span>
-            </a>
+            </Link>
           </div>
 
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">The Grand Budapest Hotel</a>
+                <a href="film-page.html" className="breadcrumbs__link">{currentFilm.name}</a>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>
@@ -41,7 +53,7 @@ function AddReviewPage(): JSX.Element {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+          <img src={currentFilm.posterImage} alt={`${currentFilm.name} poster`} width="218" height="327" />
         </div>
       </div>
 
@@ -82,7 +94,14 @@ function AddReviewPage(): JSX.Element {
           </div>
 
           <div className="add-review__text">
-            <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text"></textarea>
+            <textarea
+              className="add-review__textarea"
+              name="review-text"
+              id="review-text"
+              placeholder="Review text"
+              onChange={(e) => setReviewText(e.target.value)}
+            >
+            </textarea>
             <div className="add-review__submit">
               <button className="add-review__btn" type="submit">Post</button>
             </div>

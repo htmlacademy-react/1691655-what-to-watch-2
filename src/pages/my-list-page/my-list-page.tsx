@@ -1,8 +1,9 @@
-import FilmCardScreen from "../../components/film-card";
-import { Film_Briefly } from "../../types/film";
+import { Link } from 'react-router-dom';
+import FilmCardScreen from '../../components/film-card';
+import { FilmBriefly } from '../../types/film';
 
 type MyListPageProps = {
-  favoriteFilmsList: Film_Briefly[];
+  favoriteFilmsList: FilmBriefly[];
 }
 
 function MyListPage({favoriteFilmsList}: MyListPageProps): JSX.Element {
@@ -10,14 +11,14 @@ function MyListPage({favoriteFilmsList}: MyListPageProps): JSX.Element {
     <div className="user-page">
       <header className="page-header user-page__head">
         <div className="logo">
-          <a href="main.html" className="logo__link">
+          <Link to="/" className="logo__link">
             <span className="logo__letter logo__letter--1">W</span>
             <span className="logo__letter logo__letter--2">T</span>
             <span className="logo__letter logo__letter--3">W</span>
-          </a>
+          </Link>
         </div>
 
-        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">9</span></h1>
+        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">{favoriteFilmsList.length}</span></h1>
         <ul className="user-block">
           <li className="user-block__item">
             <div className="user-block__avatar">
@@ -35,18 +36,18 @@ function MyListPage({favoriteFilmsList}: MyListPageProps): JSX.Element {
 
         <div className="catalog__films-list">
           {
-            favoriteFilmsList.map((film, id) => <FilmCardScreen key={id} filmBriefly={film}/>)
+            favoriteFilmsList.map((film) => <FilmCardScreen key={`${film.id}`} filmBriefly={film}/>)
           }
         </div>
       </section>
 
       <footer className="page-footer">
         <div className="logo">
-          <a href="main.html" className="logo__link logo__link--light">
+          <Link to="/" className="logo__link logo__link--light">
             <span className="logo__letter logo__letter--1">W</span>
             <span className="logo__letter logo__letter--2">T</span>
             <span className="logo__letter logo__letter--3">W</span>
-          </a>
+          </Link>
         </div>
 
         <div className="copyright">
