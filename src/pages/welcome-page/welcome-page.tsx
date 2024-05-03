@@ -1,27 +1,20 @@
+import { Link } from 'react-router-dom';
+import FilmsList from '../../components/films-list';
+import { FilmBriefly, FilmInDetails } from '../../types/film';
+
 type WecomeScreenProps = {
   filmCardsNumber: number;
+  filmsList: FilmBriefly[];
+  welcomeFilm: FilmInDetails;
+  favoriteFilmsNumber: number;
 }
 
-function WelcomePage({ filmCardsNumber }: WecomeScreenProps): JSX.Element {
-  const filmCardsList = [];
-
-  for (let i = 0; i < filmCardsNumber; i++) {
-    filmCardsList.push(
-      <article key={i} className="small-film-card catalog__films-card">
-        <div className="small-film-card__image">
-          <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
-        </div>
-        <h3 className="small-film-card__title">
-          <a className="small-film-card__link" href="film-page.html">Fantastic Beasts: The Crimes of Grindelwald</a>
-        </h3>
-      </article>
-    );
-  }
+function WelcomePage({ filmCardsNumber, filmsList, welcomeFilm, favoriteFilmsNumber }: WecomeScreenProps): JSX.Element {
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={welcomeFilm.backgroundImage} alt={welcomeFilm.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -50,30 +43,35 @@ function WelcomePage({ filmCardsNumber }: WecomeScreenProps): JSX.Element {
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+              <img src={welcomeFilm.posterImage} alt={`${welcomeFilm.name} poster`} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">The Grand Budapest Hotel</h2>
+              <h2 className="film-card__title">{welcomeFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">Drama</span>
-                <span className="film-card__year">2014</span>
+                <span className="film-card__genre">{welcomeFilm.genre}</span>
+                <span className="film-card__year">{welcomeFilm.released}</span>
               </p>
-
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
-                  </svg>
-                  <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">9</span>
-                </button>
+                <Link to={`/player/${welcomeFilm.id}`}>
+                  <button className="btn btn--play film-card__button" type="button">
+                    <svg viewBox="0 0 19 19" width="19" height="19">
+                      <use xlinkHref="#play-s"></use>
+                    </svg>
+                    <span>Play</span>
+                  </button>
+                </Link>
+                <Link to={'/my-list'}>
+                  <button className="btn btn--list film-card__button" type="button">
+                    <svg viewBox="0 0 19 20" width="19" height="20">
+                      <use xlinkHref="#add"></use>
+                    </svg>
+                    <span>My list</span>
+                    <span className="film-card__count">
+                      {favoriteFilmsNumber}
+                    </span>
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -116,13 +114,7 @@ function WelcomePage({ filmCardsNumber }: WecomeScreenProps): JSX.Element {
               <a href="#" className="catalog__genres-link">Thrillers</a>
             </li>
           </ul>
-
-          <div className="catalog__films-list">
-            {
-              filmCardsList
-            }
-          </div>
-
+          <FilmsList filmCardsNumber = {filmCardsNumber} filmsList={filmsList} />
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
           </div>

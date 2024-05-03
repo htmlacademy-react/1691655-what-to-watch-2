@@ -1298,6 +1298,8 @@ main {
   width: 200px; }
 
 .small-film-card {
+  color: #C9B37E;
+  
   border-radius: 6px;
   overflow: hidden;
   position: relative;
