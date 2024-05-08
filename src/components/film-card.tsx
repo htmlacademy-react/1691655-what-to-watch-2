@@ -5,7 +5,7 @@ type FilmCardProps = {
   filmBriefly: FilmBriefly;
 }
 
-function FilmCardScreen({filmBriefly}: FilmCardProps): JSX.Element {
+function FilmCard({filmBriefly}: FilmCardProps): JSX.Element {
   return (
     <Link
       to={`/film/${filmBriefly.id}`}
@@ -21,4 +21,4 @@ function FilmCardScreen({filmBriefly}: FilmCardProps): JSX.Element {
   );
 }
 
-export default FilmCardScreen;
+export default FilmCard;

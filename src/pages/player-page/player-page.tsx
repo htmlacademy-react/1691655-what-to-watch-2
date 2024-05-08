@@ -8,10 +8,7 @@ type PlayerPageProps = {
 function PlayerPage({filmsForPlay}: PlayerPageProps): JSX.Element {
   const { id } = useParams();
 
-  let filmName = filmsForPlay.find((film) => film.id === id)?.name as string;
-  if (!filmName) {
-    filmName = 'Film Not Found';
-  }
+  const filmName = filmsForPlay.find((film) => film.id === id)?.name || 'Film Not Found';
 
   return (
     <div className="player">

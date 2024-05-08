@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { FilmInDetails } from '../../types/film';
 import NotFoundPage from '../not-found-page/not-found-page';
+import SvgIcon from '../../components/icon';
 
 type FilmPageProps = {
   filmsInDetailsList: FilmInDetails[];
@@ -9,7 +10,7 @@ type FilmPageProps = {
 
 function FilmPage({filmsInDetailsList, favoriteFilmsNumber}: FilmPageProps): JSX.Element {
   const { id } = useParams();
-  const currentFilm = filmsInDetailsList.find((film) => film.id === id) as FilmInDetails;
+  const currentFilm = filmsInDetailsList.find((film) => film.id === id);
   if (!currentFilm) {
     return <NotFoundPage />;
   }
@@ -55,17 +56,17 @@ function FilmPage({filmsInDetailsList, favoriteFilmsNumber}: FilmPageProps): JSX
               <div className="film-card__buttons">
                 <Link to={`/player/${currentFilm.id}`}>
                   <button className="btn btn--play film-card__button" type="button">
-                    <svg viewBox="0 0 19 19" width="19" height="19">
-                      <use xlinkHref="#play-s"></use>
-                    </svg>
+
+                    <SvgIcon iconRes={[19, 19]} linkHref='#play-s' />
+
                     <span>Play</span>
                   </button>
                 </Link>
                 <Link to={'/my-list'}>
                   <button className="btn btn--list film-card__button" type="button">
-                    <svg viewBox="0 0 19 20" width="19" height="20">
-                      <use xlinkHref="#add"></use>
-                    </svg>
+
+                    <SvgIcon iconRes={[19, 20]} linkHref='#add' />
+
                     <span>My list</span>
                     <span className="film-card__count">{ favoriteFilmsNumber }</span>
                   </button>
