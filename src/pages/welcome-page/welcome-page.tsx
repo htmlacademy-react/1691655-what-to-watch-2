@@ -21,11 +21,11 @@ function WelcomePage({ filmCardsNumber, filmsList, welcomeFilm, favoriteFilmsNum
 
         <header className="page-header film-card__head">
           <div className="logo">
-            <a className="logo__link">
+            <Link to="/" className="logo__link">
               <span className="logo__letter logo__letter--1">W</span>
               <span className="logo__letter logo__letter--2">T</span>
               <span className="logo__letter logo__letter--3">W</span>
-            </a>
+            </Link>
           </div>
 
           <ul className="user-block">
@@ -35,7 +35,7 @@ function WelcomePage({ filmCardsNumber, filmsList, welcomeFilm, favoriteFilmsNum
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
+              <Link to="/" className="user-block__link">Sign out</Link>
             </li>
           </ul>
         </header>

@@ -1,5 +1,6 @@
+import withVideoPlayer from '../hocs/with-video-player';
 import { FilmBriefly } from '../types/film';
-import FilmCardScreen from './film-card';
+import FilmCard from './film-card';
 
 type FilmsListProps = {
   filmCardsNumber : number;
@@ -7,10 +8,17 @@ type FilmsListProps = {
 }
 
 function FilmsList({filmCardsNumber, filmsList}: FilmsListProps): JSX.Element {
+  const FilmCardWrapped = withVideoPlayer(FilmCard);
+
   const filmCardsList = filmsList
     .slice(0, filmCardsNumber - 1)
     .map(
-      (film) => <FilmCardScreen key={film.name} filmBriefly = {film} />
+      (film) => (
+        <FilmCardWrapped
+          key={film.name}
+          filmBriefly = {film}
+        />
+      )
     );
 
   return (
