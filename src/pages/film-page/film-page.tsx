@@ -54,22 +54,18 @@ function FilmPage({filmsInDetailsList, favoriteFilmsNumber}: FilmPageProps): JSX
                 <span className="film-card__year">{ currentFilm.released }</span>
               </p>
               <div className="film-card__buttons">
-                <Link to={`/player/${currentFilm.id}`}>
-                  <button className="btn btn--play film-card__button" type="button">
+                <Link className='btn btn--play film-card__button' to={`/player/${currentFilm.id}`}>
 
-                    <SvgIcon iconRes={[19, 19]} linkHref='#play-s' />
+                  <SvgIcon viewBoxSize={[19, 19]} iconRes={[19, 19]} linkHref='#play-s' />
 
-                    <span>Play</span>
-                  </button>
+                  <span>Play</span>
                 </Link>
-                <Link to={'/my-list'}>
-                  <button className="btn btn--list film-card__button" type="button">
+                <Link className='btn btn--play film-card__button' to={'/my-list'}>
 
-                    <SvgIcon iconRes={[19, 20]} linkHref='#add' />
+                  <SvgIcon viewBoxSize={[19, 19]} iconRes={[19, 20]} linkHref='#add' />
 
-                    <span>My list</span>
-                    <span className="film-card__count">{ favoriteFilmsNumber }</span>
-                  </button>
+                  <span>My list</span>
+                  <span className="film-card__count">{ favoriteFilmsNumber }</span>
                 </Link>
                 <Link to={`/film/${currentFilm.id}/review`} className="btn film-card__button">
                   Add review

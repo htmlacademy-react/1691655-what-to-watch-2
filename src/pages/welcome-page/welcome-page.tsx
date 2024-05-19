@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import FilmsList from '../../components/films-list';
 import { FilmBriefly, FilmInDetails } from '../../types/film';
+import SvgIcon from '../../components/icon';
 
 type WecomeScreenProps = {
   filmCardsNumber: number;
@@ -53,25 +54,20 @@ function WelcomePage({ filmCardsNumber, filmsList, welcomeFilm, favoriteFilmsNum
                 <span className="film-card__year">{welcomeFilm.released}</span>
               </p>
               <div className="film-card__buttons">
-                <Link to={`/player/${welcomeFilm.id}`}>
-                  <button className="btn btn--play film-card__button" type="button">
-                    <svg viewBox="0 0 19 19" width="19" height="19">
-                      <use xlinkHref="#play-s"></use>
-                    </svg>
-                    <span>Play</span>
-                  </button>
+
+                <Link className='btn btn--play film-card__button' to={`/player/${welcomeFilm.id}`}>
+                  <SvgIcon viewBoxSize={[19, 19]} iconRes={[19, 19]} linkHref='#play-s' />
+                  <span>Play</span>
                 </Link>
-                <Link to={'/my-list'}>
-                  <button className="btn btn--list film-card__button" type="button">
-                    <svg viewBox="0 0 19 20" width="19" height="20">
-                      <use xlinkHref="#add"></use>
-                    </svg>
-                    <span>My list</span>
-                    <span className="film-card__count">
-                      {favoriteFilmsNumber}
-                    </span>
-                  </button>
+
+                <Link className='btn btn--play film-card__button' to={'/my-list'}>
+                  <SvgIcon viewBoxSize={[19, 19]} iconRes={[19, 20]} linkHref='#add' />
+                  <span>My list</span>
+                  <span className="film-card__count">
+                    {favoriteFilmsNumber}
+                  </span>
                 </Link>
+
               </div>
             </div>
           </div>

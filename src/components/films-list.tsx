@@ -7,9 +7,9 @@ type FilmsListProps = {
   filmsList: FilmBriefly[];
 }
 
-function FilmsList({filmCardsNumber, filmsList}: FilmsListProps): JSX.Element {
-  const FilmCardWrapped = withVideoPlayer(FilmCard);
+const FilmCardWrapped = withVideoPlayer(FilmCard);
 
+function FilmsList({filmCardsNumber, filmsList}: FilmsListProps): JSX.Element {
   const filmCardsList = filmsList
     .slice(0, filmCardsNumber - 1)
     .map(

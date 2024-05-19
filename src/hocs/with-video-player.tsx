@@ -1,4 +1,5 @@
-import { ComponentType, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
+import { FilmCardProps } from '../types/film';
 
 type HOCProps = {
   isPlayerActive: boolean;
@@ -7,12 +8,8 @@ type HOCProps = {
   renderPlayer: () => JSX.Element;
 }
 
-function withVideoPlayer<T>(Component: ComponentType<T>): ComponentType<Omit<T, keyof HOCProps>> {
-
-  type ComponentProps = Omit<T, keyof HOCProps>
-
-  function WithVideoPlayer(props: ComponentProps): JSX.Element {
-
+function withVideoPlayer(Component: FunctionComponent<FilmCardProps>) {
+  return function WrappedComponent(props: Omit<FilmCardProps, keyof HOCProps>) {
     const [playerVisible, setPlayerVisible] = useState(false);
     let timeout: ReturnType<typeof setTimeout>;
 
@@ -30,7 +27,7 @@ function withVideoPlayer<T>(Component: ComponentType<T>): ComponentType<Omit<T, 
 
     return (
       <Component
-        {...props as T}
+        {...props}
         isPlayerActive = {playerVisible}
         onMouseOver = {handleMouseOver}
         onMouseLeave = {handleMouseLeave}
@@ -45,9 +42,7 @@ function withVideoPlayer<T>(Component: ComponentType<T>): ComponentType<Omit<T, 
         )}
       />
     );
-  }
-
-  return WithVideoPlayer;
+  };
 }
 
 export default withVideoPlayer;

@@ -1,13 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FilmBriefly } from '../types/film';
-
-type FilmCardProps = {
-  filmBriefly: FilmBriefly;
-  isPlayerActive: boolean;
-  renderPlayer: (src: string) => JSX.Element;
-  onMouseOver: () => void;
-  onMouseLeave: () => void;
-}
+import { FilmCardProps } from '../types/film';
 
 function FilmCard({filmBriefly, onMouseLeave, onMouseOver, isPlayerActive, renderPlayer}: FilmCardProps): JSX.Element {
 
