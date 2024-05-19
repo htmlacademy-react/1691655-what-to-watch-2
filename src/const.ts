@@ -17,3 +17,9 @@ export const enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const enum Tabs {
+  Overview = 'Overview',
+  Details = 'Details',
+  Reviews = 'Reviews',
+}
