@@ -23,3 +23,11 @@ export type FilmInDetails = {
     released: number;
     isFavorite: boolean;
 }
+
+export type FilmCardProps = {
+    filmBriefly: FilmBriefly;
+    isPlayerActive: boolean;
+    renderPlayer: (src: string) => JSX.Element;
+    onMouseOver: () => void;
+    onMouseLeave: () => void;
+  }

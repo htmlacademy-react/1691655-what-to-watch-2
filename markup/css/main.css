@@ -753,8 +753,9 @@ main {
   display: flex; }
 
 .film-card__button {
-  margin-right: 14px; }
-  .film-card__button:last-child {
+  margin-right: 14px;
+  text-decoration: none;
+  } .film-card__button:last-child {
     margin-right: 0; }
 
 .film-card__translate-top {

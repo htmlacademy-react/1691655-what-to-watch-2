@@ -1,23 +1,19 @@
-import { Link } from 'react-router-dom';
-import FilmCardScreen from '../../components/film-card';
 import { FilmBriefly } from '../../types/film';
+import Logo from '../../components/logo';
+import withVideoPlayer from '../../hocs/with-video-player';
+import FilmCard from '../../components/film-card';
 
 type MyListPageProps = {
   favoriteFilmsList: FilmBriefly[];
 }
 
+const FilmCardWrapped = withVideoPlayer(FilmCard);
+
 function MyListPage({favoriteFilmsList}: MyListPageProps): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
-        <div className="logo">
-          <Link to="/" className="logo__link">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </Link>
-        </div>
-
+        <Logo />
         <h1 className="page-title user-page__title">My list <span className="user-page__film-count">{favoriteFilmsList.length}</span></h1>
         <ul className="user-block">
           <li className="user-block__item">
@@ -36,20 +32,20 @@ function MyListPage({favoriteFilmsList}: MyListPageProps): JSX.Element {
 
         <div className="catalog__films-list">
           {
-            favoriteFilmsList.map((film) => <FilmCardScreen key={`${film.id}`} filmBriefly={film}/>)
+            favoriteFilmsList
+              .map(
+                (film) => (
+                  <FilmCardWrapped
+                    key={`${film.id}`}
+                    filmBriefly={film}
+                  />)
+              )
           }
         </div>
       </section>
 
       <footer className="page-footer">
-        <div className="logo">
-          <Link to="/" className="logo__link logo__link--light">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </Link>
-        </div>
-
+        <Logo />
         <div className="copyright">
           <p>© 2019 What to watch Ltd.</p>
         </div>
