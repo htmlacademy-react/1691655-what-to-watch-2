@@ -1,5 +1,5 @@
 export const enum Setting {
-  filmCardsNumber = 20,
+  filmCardsNumber = 8,
 }
 
 export enum AppRoute {
@@ -9,7 +9,6 @@ export enum AppRoute {
   Review = '/film/:id/review',
   Player = '/player/:id',
   Film = '/film/:id',
-
 }
 
 export const enum AuthorizationStatus {

@@ -5,6 +5,7 @@ import SvgIcon from '../../components/icon';
 import Logo from '../../components/logo';
 import { useAppSelector } from '../../hooks';
 import { GenresList } from '../../components/genres-list';
+import { ShowMoreButton } from '../../components/show-more-button';
 
 type WecomeScreenProps = {
   filmCardsNumber: number;
@@ -12,9 +13,11 @@ type WecomeScreenProps = {
   favoriteFilmsNumber: number;
 }
 
-function WelcomePage({ filmCardsNumber, welcomeFilm, favoriteFilmsNumber }: WecomeScreenProps): JSX.Element {
-  const currentFilms = useAppSelector((state) => state.films);
+function WelcomePage({ welcomeFilm, favoriteFilmsNumber }: WecomeScreenProps): JSX.Element {
+  const currentFilms = useAppSelector((state) => state.genreFilteredFilms);
   const genresList = useAppSelector((state) => state.genresList);
+  const showedFilmsNumber = useAppSelector((state) => state.showedFilmsNumber);
+  const totalFilmsNumber = useAppSelector((state) => state.genreFilteredFilms.length);
 
   return (
     <>
@@ -78,10 +81,14 @@ function WelcomePage({ filmCardsNumber, welcomeFilm, favoriteFilmsNumber }: Weco
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <GenresList genresList={genresList} />
 
-          <FilmsList filmCardsNumber = {filmCardsNumber} filmsList={currentFilms} />
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          <FilmsList filmsList={currentFilms.slice(0, showedFilmsNumber)} />
+
+          {
+            (showedFilmsNumber < totalFilmsNumber)
+              ? <ShowMoreButton />
+              : <></>
+          }
+
         </section>
 
         <footer className="page-footer">

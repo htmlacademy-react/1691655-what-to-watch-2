@@ -28,7 +28,6 @@ function App({ filmCardsNumber, filmsBrieflyList, filmsInDetailsList }: AppScree
         <Route path={AppRoute.Root} element={
           <WelcomePage
             filmCardsNumber={filmCardsNumber}
-            filmsList={filmsBrieflyList}
             welcomeFilm={welcomeRandomFilm}
             favoriteFilmsNumber={favoriteBrieflyFilms.length}
           />
