@@ -4,6 +4,8 @@ import App from './components/app/app';
 import { Setting } from './const';
 import { filmsBrieflyList } from './mock/filmsBrieflyList';
 import { filmsInDetailsList } from './mock/filmsDetailList';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,10 +13,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App
-      filmCardsNumber = {Setting.filmCardsNumber}
-      filmsBrieflyList = {filmsBrieflyList}
-      filmsInDetailsList = {filmsInDetailsList}
-    />
+    <Provider store={store}>
+      <App
+        filmCardsNumber = {Setting.filmCardsNumber}
+        filmsBrieflyList = {filmsBrieflyList}
+        filmsInDetailsList = {filmsInDetailsList}
+      />
+    </Provider>
   </React.StrictMode>
 );

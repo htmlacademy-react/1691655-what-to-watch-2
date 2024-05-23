@@ -18,7 +18,7 @@ function FilmCard({filmBriefly, onMouseLeave, onMouseOver, isPlayerActive, rende
             <img src={filmBriefly.previewImage} alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
           </div>
           <h3 className="small-film-card__title">
-            <a className="small-film-card__link" href="film-page.html">{filmBriefly.name}</a>
+            <Link className="small-film-card__link" to="#">{filmBriefly.name}</Link>
           </h3>
         </>}
     </Link>

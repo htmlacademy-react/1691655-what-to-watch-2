@@ -28,7 +28,6 @@ function App({ filmCardsNumber, filmsBrieflyList, filmsInDetailsList }: AppScree
         <Route path={AppRoute.Root} element={
           <WelcomePage
             filmCardsNumber={filmCardsNumber}
-            filmsList={filmsBrieflyList}
             welcomeFilm={welcomeRandomFilm}
             favoriteFilmsNumber={favoriteBrieflyFilms.length}
           />
@@ -44,7 +43,14 @@ function App({ filmCardsNumber, filmsBrieflyList, filmsInDetailsList }: AppScree
             </PrivateRoute>
           }
         />
-        <Route path={AppRoute.Film} element={<FilmPage filmsInDetailsList={filmsInDetailsList} favoriteFilmsNumber={favoriteBrieflyFilms.length} />} />
+        <Route path={AppRoute.Film} element={
+          <FilmPage
+            filmsInDetailsList={filmsInDetailsList}
+            favoriteFilmsNumber={favoriteBrieflyFilms.length}
+            filmsList={filmsBrieflyList}
+          />
+        }
+        />
         <Route path={AppRoute.Review} element={<AddReviewPage filmsInDetailsList={filmsInDetailsList}/>} />
         <Route path={AppRoute.Player} element={<PlayerPage filmsForPlay={filmsBrieflyList}/>} />
         <Route path='*' element={<h1>Ошибка 404. Страница не существует.</h1>} />

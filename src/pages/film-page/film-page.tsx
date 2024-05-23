@@ -1,21 +1,27 @@
 import { Link, useParams } from 'react-router-dom';
-import { FilmInDetails } from '../../types/film';
+import { FilmBriefly, FilmInDetails } from '../../types/film';
 import NotFoundPage from '../not-found-page/not-found-page';
 import SvgIcon from '../../components/icon';
 import Logo from '../../components/logo';
-import Tabs from '../../components/tabs/tabs-component';
+import DescriptionTabsComponent from '../../components/descrptiion-tabs/description-tabs-component';
+import { shuffleArray } from '../../utils';
+import FilmsList from '../../components/films-list';
 
 type FilmPageProps = {
   filmsInDetailsList: FilmInDetails[];
   favoriteFilmsNumber: number;
+  filmsList: FilmBriefly[];
 }
 
-function FilmPage({filmsInDetailsList, favoriteFilmsNumber}: FilmPageProps): JSX.Element {
+function FilmPage({filmsInDetailsList, favoriteFilmsNumber, filmsList}: FilmPageProps): JSX.Element {
   const { id } = useParams();
   const currentFilm = filmsInDetailsList.find((film) => film.id === id);
+
   if (!currentFilm) {
     return <NotFoundPage />;
   }
+
+  const sameGenreFilms = shuffleArray(filmsList.filter((film) => film.genre === currentFilm.genre)).slice(0, 4);
 
   return (
     <>
@@ -37,7 +43,7 @@ function FilmPage({filmsInDetailsList, favoriteFilmsNumber}: FilmPageProps): JSX
                 </div>
               </li>
               <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
+                <Link to="#" className="user-block__link">Sign out</Link>
               </li>
             </ul>
           </header>
@@ -75,7 +81,7 @@ function FilmPage({filmsInDetailsList, favoriteFilmsNumber}: FilmPageProps): JSX
               <img src={currentFilm.posterImage} alt={`${currentFilm.name} poster`} width="218" height="327" />
             </div>
 
-            <Tabs currentFilm={currentFilm} />
+            <DescriptionTabsComponent currentFilm={currentFilm} />
           </div>
         </div>
       </section>
@@ -84,43 +90,8 @@ function FilmPage({filmsInDetailsList, favoriteFilmsNumber}: FilmPageProps): JSX
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <div className="catalog__films-list">
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Fantastic Beasts: The Crimes of Grindelwald</a>
-              </h3>
-            </article>
+          <FilmsList filmsList={sameGenreFilms} />
 
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/bohemian-rhapsody.jpg" alt="Bohemian Rhapsody" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Bohemian Rhapsody</a>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/macbeth.jpg" alt="Macbeth" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Macbeth</a>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/aviator.jpg" alt="Aviator" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Aviator</a>
-              </h3>
-            </article>
-          </div>
         </section>
 
         <footer className="page-footer">
