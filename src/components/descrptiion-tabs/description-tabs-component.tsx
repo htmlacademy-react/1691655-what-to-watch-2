@@ -10,7 +10,7 @@ type TabsProps = {
   currentFilm: FilmInDetails;
 }
 
-function TabsComponent (props: TabsProps): JSX.Element {
+function DescriptionTabsComponent (props: TabsProps): JSX.Element {
   const {currentFilm} = props;
   const [currentTab, setCurrentTab] = useState(Tabs.Overview);
 
@@ -38,4 +38,4 @@ function TabsComponent (props: TabsProps): JSX.Element {
   );
 }
 
-export default TabsComponent;
+export default DescriptionTabsComponent;

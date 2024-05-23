@@ -26,6 +26,7 @@ export type FilmInDetails = {
 
 export type FilmCardProps = {
     filmBriefly: FilmBriefly;
+    filmsList: FilmBriefly[];
     isPlayerActive: boolean;
     renderPlayer: (src: string) => JSX.Element;
     onMouseOver: () => void;

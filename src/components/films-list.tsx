@@ -15,6 +15,7 @@ function FilmsList({filmsList}: FilmsListProps): JSX.Element {
         <FilmCardWrapped
           key={film.name}
           filmBriefly = {film}
+          filmsList={filmsList}
         />
       )
     );

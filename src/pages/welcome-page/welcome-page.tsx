@@ -8,7 +8,6 @@ import { GenresList } from '../../components/genres-list';
 import { ShowMoreButton } from '../../components/show-more-button';
 
 type WecomeScreenProps = {
-  filmCardsNumber: number;
   welcomeFilm: FilmInDetails;
   favoriteFilmsNumber: number;
 }
@@ -86,7 +85,7 @@ function WelcomePage({ welcomeFilm, favoriteFilmsNumber }: WecomeScreenProps): J
           {
             (showedFilmsNumber < totalFilmsNumber)
               ? <ShowMoreButton />
-              : <></>
+              : null
           }
 
         </section>

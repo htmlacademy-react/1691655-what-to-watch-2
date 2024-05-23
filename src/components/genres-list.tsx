@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { store } from "../store";
-import { useAppDispatch } from "../hooks";
-import { changeGenre } from "../store/actions";
+import { Link } from 'react-router-dom';
+import { store } from '../store';
+import { useAppDispatch } from '../hooks';
+import { changeGenre } from '../store/actions';
 
 export function GenresList({genresList}: {genresList: string[]}): JSX.Element {
   const dispatch = useAppDispatch();
@@ -22,5 +22,5 @@ export function GenresList({genresList}: {genresList: string[]}): JSX.Element {
         ))
       }
     </ul>
-  )
+  );
 }
