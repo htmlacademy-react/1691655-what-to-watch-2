@@ -2,6 +2,8 @@ export const enum Setting {
   filmCardsNumber = 8,
 }
 
+export const ALL_GENRES = 'All genres'
+
 export enum AppRoute {
   Root = '/',
   Login = '/login',

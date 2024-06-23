@@ -1,12 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { changeGenre, addMoreFilms } from './actions';
 import { filmsBrieflyList } from '../mock/filmsBrieflyList';
-import { Setting } from '../const';
+import { ALL_GENRES, Setting } from '../const';
 
 const initialState = {
-  genre: 'All genres',
+  genre: ALL_GENRES,
   genreFilteredFilms: filmsBrieflyList,
-  genresList: ['All genres'].concat([...new Set(filmsBrieflyList.map((film) => film.genre))]),
+  genresList: [ALL_GENRES].concat([...new Set(filmsBrieflyList.map((film) => film.genre))]),
   showedFilmsNumber: Setting.filmCardsNumber,
 };
 
@@ -23,7 +23,7 @@ export const reducer = createReducer(initialState, (builder) => {
       state.showedFilmsNumber = Setting.filmCardsNumber;
       state.genre = action.payload.genre;
       state.genreFilteredFilms = filmsBrieflyList.filter((film) => {
-        if (action.payload.genre === 'All genres') {
+        if (action.payload.genre === ALL_GENRES) {
           return true;
         } else {
           return film.genre === action.payload.genre;
