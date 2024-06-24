@@ -13,10 +13,10 @@ type WecomeScreenProps = {
 }
 
 function WelcomePage({ welcomeFilm, favoriteFilmsNumber }: WecomeScreenProps): JSX.Element {
-  const currentFilms = useAppSelector((state) => state.genreFilteredFilms);
+  const currentFilms = useAppSelector((state) => state.filmsToShow);
   const genresList = useAppSelector((state) => state.genresList);
   const showedFilmsNumber = useAppSelector((state) => state.showedFilmsNumber);
-  const totalFilmsNumber = useAppSelector((state) => state.genreFilteredFilms.length);
+  const totalFilmsNumber = useAppSelector((state) => state.filmsToShow.length);
 
   return (
     <>

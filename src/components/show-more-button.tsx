@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../hooks';
-import { addMoreFilms } from '../store/actions';
+import { showMoreFilms } from '../store/actions';
 
 export function ShowMoreButton (): JSX.Element {
   const dispatch = useAppDispatch();
@@ -10,7 +10,7 @@ export function ShowMoreButton (): JSX.Element {
         className="catalog__button"
         type="button"
         onClick={() => {
-          dispatch(addMoreFilms());
+          dispatch(showMoreFilms());
         }}
       >
         Show more
