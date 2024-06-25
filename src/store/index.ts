@@ -5,11 +5,11 @@ import { createApi } from '../services/api';
 export const api = createApi();
 
 export const store = configureStore({
-    reducer: reducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-          thunk: {
-            extraArgument: api
-          },
-        })
+  reducer: reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: {
+        extraArgument: api
+      },
+    })
 });

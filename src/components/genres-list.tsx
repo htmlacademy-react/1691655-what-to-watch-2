@@ -15,8 +15,8 @@ export function GenresList({genresList}: {genresList: string[]}): JSX.Element {
               to="#"
               className={`catalog__genres-link ${genre === store.getState().genre ? 'catalog__genres-item--active' : ''}`}
               onClick={ (evt) => {
-                if (evt.target  instanceof HTMLElement) {
-                  dispatch(changeGenre({ genre: (evt.target).innerText }))
+                if (evt.target instanceof HTMLElement) {
+                  dispatch(changeGenre({ genre: (evt.target).innerText }));
                 }
               }}
             >

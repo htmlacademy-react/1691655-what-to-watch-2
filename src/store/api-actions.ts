@@ -1,21 +1,24 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AppDispatch, State } from "../types/store";
-import { AxiosInstance } from "axios";
-import { FilmBriefly } from "../types/film";
-import { APIRoute } from "../const";
-import { loadFilms } from "./actions";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AppDispatch, State } from '../types/store';
+import { AxiosInstance } from 'axios';
+import { FilmBriefly } from '../types/film';
+import { APIRoute } from '../const';
+import { loadFilms, setFilmsDataLoadingStatus } from './actions';
 
-export const fetchFilms = createAsyncThunk<void, undefined, {
+export const fetchFilms = createAsyncThunk<
+  void,
+  undefined,
+  {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
-}>(
-    'data/fetchFilms',
-    async (_args, {dispatch, extra: api}) => {
-        const {data} = await api.get<FilmBriefly[]>(APIRoute.Films);
+  }
+>('data/fetchFilms', async (_args, { dispatch, extra: api }) => {
+  dispatch(setFilmsDataLoadingStatus(true));
 
-        console.log(data);
-        
-        dispatch(loadFilms(data));
-    }
-)
+  const { data } = await api.get<FilmBriefly[]>(APIRoute.Films);
+
+  dispatch(setFilmsDataLoadingStatus(false));
+
+  dispatch(loadFilms(data));
+});

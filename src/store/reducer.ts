@@ -1,15 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, loadFilms, requiredAuthorization, showMoreFilms } from './actions';
+import { changeGenre, loadFilms, requiredAuthorization, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
 import { ALL_GENRES, AuthorizationStatus, Setting } from '../const';
 import { FilmBriefly } from '../types/film';
 
 type InitialState = {
-  genre: string,
-  allFilms: FilmBriefly[],
-  filmsToShow: FilmBriefly[],
-  genresList: string[],
-  showedFilmsNumber: number,
-  authorizationStatus: string,
+  genre: string;
+  allFilms: FilmBriefly[];
+  filmsToShow: FilmBriefly[];
+  genresList: string[];
+  showedFilmsNumber: number;
+  authorizationStatus: string;
+  isFilmsLoading: boolean;
 }
 
 const initialState: InitialState = {
@@ -19,6 +20,7 @@ const initialState: InitialState = {
   genresList: [],
   showedFilmsNumber: Setting.filmCardsNumber,
   authorizationStatus: AuthorizationStatus.Unknown,
+  isFilmsLoading: false,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -52,4 +54,8 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(requiredAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
+
+    .addCase(setFilmsDataLoadingStatus, (state, action) => {
+      state.isFilmsLoading = action.payload;
+    });
 });

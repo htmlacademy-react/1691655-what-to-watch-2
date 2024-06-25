@@ -9,3 +9,5 @@ export const showMoreFilms = createAction('welcomePage/showMoreFilms');
 export const loadFilms = createAction<FilmBriefly[]>('data/loadFilms');
 
 export const requiredAuthorization = createAction<AuthorizationStatus>('user/requiredAuthorization');
+
+export const setFilmsDataLoadingStatus = createAction<boolean>('data/setFilmsDataLoadingStatus');
