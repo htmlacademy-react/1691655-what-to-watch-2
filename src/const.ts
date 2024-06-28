@@ -22,3 +22,13 @@ export const enum Tabs {
   Details = 'Details',
   Reviews = 'Reviews',
 }
+
+export enum APIRoute {
+  Films = '/films',
+  Login = '/login',
+  Logout = '/logout',
+}
+
+export const ALL_GENRES = 'All genres';
+export const BACKEND_URL = 'https://13.design.htmlacademy.pro/wtw';
+export const REQUEST_TIMEOUT = 5000;
