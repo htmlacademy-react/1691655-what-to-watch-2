@@ -24,11 +24,10 @@ function App({ filmsBrieflyList, filmsInDetailsList }: AppScreenProps): JSX.Elem
   const favoriteBrieflyFilms = favoriteFilmsInDetails.map((film) => findBrieflyFilmById(film.id));
   const welcomeRandomFilm = filmsInDetailsList[Math.floor(Math.random() * filmsInDetailsList.length)];
 
-  // const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isFilmsLoading = useAppSelector((state) => state.isFilmsLoading);
 
-  // if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsLoading) {
-  if (isFilmsLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsLoading) {
     return (
       <LoadingScreen />
     );
@@ -38,19 +37,22 @@ function App({ filmsBrieflyList, filmsInDetailsList }: AppScreenProps): JSX.Elem
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={AppRoute.Root} element={
-            <WelcomePage
-              welcomeFilm={welcomeRandomFilm}
-              favoriteFilmsNumber={favoriteBrieflyFilms.length}
-            />
-          }
+          <Route
+            path={AppRoute.Root}
+            element={
+              <WelcomePage
+                welcomeFilm={welcomeRandomFilm}
+                favoriteFilmsNumber={favoriteBrieflyFilms.length}
+              />
+            }
           />
-          <Route path={AppRoute.Login} element={<SignInPage />}/>
+          <Route
+            path={AppRoute.Login}
+            element={<SignInPage />}
+          />
           <Route path={AppRoute.MyList} element=
             {
-              <PrivateRoute
-                authorizationStatus={AuthorizationStatus.Auth}
-              >
+              <PrivateRoute authorizationStatus={authorizationStatus}>
                 <MyListPage favoriteFilmsList = {favoriteBrieflyFilms}/>
               </PrivateRoute>
             }
