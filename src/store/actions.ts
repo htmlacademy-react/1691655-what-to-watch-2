@@ -13,3 +13,5 @@ export const requireAuthorization = createAction<AuthorizationStatus>('user/requ
 export const setFilmsDataLoadingStatus = createAction<boolean>('data/setFilmsDataLoadingStatus');
 
 export const setError = createAction<string | null>('server/setError');
+
+export const saveAvatarUrl = createAction<string | null>('user/saveAvatar');

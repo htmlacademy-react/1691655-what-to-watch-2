@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, loadFilms, requireAuthorization, setError, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
+import { changeGenre, loadFilms, requireAuthorization, saveAvatarUrl, setError, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
 import { ALL_GENRES, AuthorizationStatus, Setting } from '../const';
 import { FilmBriefly } from '../types/film';
 
@@ -12,6 +12,7 @@ type InitialState = {
   authorizationStatus: AuthorizationStatus;
   isFilmsLoading: boolean;
   error: string | null;
+  avatarUrl: string | null;
 };
 
 const initialState: InitialState = {
@@ -23,6 +24,7 @@ const initialState: InitialState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   isFilmsLoading: false,
   error: null,
+  avatarUrl: null,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -54,8 +56,6 @@ export const reducer = createReducer(initialState, (builder) => {
     })
 
     .addCase(requireAuthorization, (state, action) => {
-      console.log('reducer action requireAuthorization..', action.payload);
-
       state.authorizationStatus = action.payload;
     })
 
@@ -65,5 +65,9 @@ export const reducer = createReducer(initialState, (builder) => {
 
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+
+    .addCase(saveAvatarUrl, (state, action) => {
+      state.avatarUrl = action.payload;
     });
 });
