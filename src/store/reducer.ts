@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, loadFilms, requiredAuthorization, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
+import { changeGenre, loadFilms, requireAuthorization, saveAvatarUrl, setError, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
 import { ALL_GENRES, AuthorizationStatus, Setting } from '../const';
 import { FilmBriefly } from '../types/film';
 
@@ -9,9 +9,11 @@ type InitialState = {
   filmsToShow: FilmBriefly[];
   genresList: string[];
   showedFilmsNumber: number;
-  authorizationStatus: string;
+  authorizationStatus: AuthorizationStatus;
   isFilmsLoading: boolean;
-}
+  error: string | null;
+  avatarUrl: string | null;
+};
 
 const initialState: InitialState = {
   genre: ALL_GENRES,
@@ -21,6 +23,8 @@ const initialState: InitialState = {
   showedFilmsNumber: Setting.filmCardsNumber,
   authorizationStatus: AuthorizationStatus.Unknown,
   isFilmsLoading: false,
+  error: null,
+  avatarUrl: null,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -51,11 +55,19 @@ export const reducer = createReducer(initialState, (builder) => {
       state.genresList = [ALL_GENRES].concat([...new Set(action.payload.map((film) => film.genre))]);
     })
 
-    .addCase(requiredAuthorization, (state, action) => {
+    .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
 
     .addCase(setFilmsDataLoadingStatus, (state, action) => {
       state.isFilmsLoading = action.payload;
+    })
+
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
+    })
+
+    .addCase(saveAvatarUrl, (state, action) => {
+      state.avatarUrl = action.payload;
     });
 });
