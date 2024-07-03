@@ -5,15 +5,23 @@ import { loginAction } from '../../store/api-actions';
 import { AuthData } from '../../types/auth-data';
 import { FormEvent, useEffect, useRef } from 'react';
 
-function SignInPage(): JSX.Element {
-  const regex =
+const regex =
     /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[a-zA-Z])(?!.*[^ a-zA-Z0-9]).*$/;
 
+function SignInPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authStatus = useAppSelector((state) => state.authorizationStatus);
+
+  const handlePasswordChange = () => {
+    if (passwordRef.current) {
+      !regex.test(passwordRef.current.value)
+        ? passwordRef.current.setCustomValidity('Пароль должен состоять минимум из одной буквы и цифры.')
+        : passwordRef.current.setCustomValidity('');
+    }
+  };
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
@@ -34,15 +42,9 @@ function SignInPage(): JSX.Element {
   };
 
   useEffect(() => {
-    let isLogin = true;
-
-    if (isLogin && authStatus === AuthorizationStatus.Auth) {
+    if (authStatus === AuthorizationStatus.Auth) {
       navigate(AppRoute.Root);
     }
-
-    return () => {
-      isLogin = false;
-    };
   }, [navigate, authStatus]);
 
   return (
@@ -86,6 +88,7 @@ function SignInPage(): JSX.Element {
             <div className="sign-in__field">
               <input
                 ref={passwordRef}
+                onChange={handlePasswordChange}
                 className="sign-in__input"
                 type="password"
                 placeholder="Password"
