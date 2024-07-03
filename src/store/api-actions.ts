@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/store';
 import { AxiosInstance } from 'axios';
-import { FilmBriefly } from '../types/film';
+import { FilmBriefly, FilmInDetails } from '../types/film';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import {
+  loadFilmDetails,
   loadFilms,
   requireAuthorization,
   saveAvatarUrl,
@@ -31,6 +32,22 @@ export const fetchFilms = createAsyncThunk<
 
   dispatch(loadFilms(data));
 });
+
+export const fetchFilmDetail = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchFilmDetail', async (id: string, { dispatch, extra: api }) => {
+  dispatch(setFilmsDataLoadingStatus(true));
+  const { data } = await api.get<FilmInDetails>(`${APIRoute.Films}/${id}`);
+  dispatch(setFilmsDataLoadingStatus(false));
+
+  dispatch(loadFilmDetails(data));
+})
 
 export const checkAuth = createAsyncThunk<
   void,

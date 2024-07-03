@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { FilmBriefly } from '../types/film';
+import { FilmBriefly, FilmInDetails } from '../types/film';
 import { AuthorizationStatus } from '../const';
 
 export const changeGenre = createAction<{genre: string}>('films/changeGenre');
@@ -7,6 +7,8 @@ export const changeGenre = createAction<{genre: string}>('films/changeGenre');
 export const showMoreFilms = createAction('welcomePage/showMoreFilms');
 
 export const loadFilms = createAction<FilmBriefly[]>('data/loadFilms');
+
+export const loadFilmDetails = createAction<FilmInDetails>('data/loadFilmDetails');
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 

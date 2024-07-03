@@ -8,8 +8,6 @@ export function ErrorMessage(): JSX.Element | null {
     return null;
   }
 
-  console.log('error message..', error);
-
   return (
     <div className='error-message'>{error}</div>
   );

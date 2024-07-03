@@ -6,22 +6,30 @@ import Logo from '../../components/logo';
 import DescriptionTabsComponent from '../../components/descrptiion-tabs/description-tabs-component';
 import { shuffleArray } from '../../utils';
 import FilmsList from '../../components/films-list';
+import { fetchFilmDetail } from '../../store/api-actions';
+import { store } from '../../store';
+import { useAppSelector } from '../../hooks';
 
 type FilmPageProps = {
-  filmsInDetailsList: FilmInDetails[];
+  currentFilm: FilmInDetails;
   favoriteFilmsNumber: number;
-  filmsList: FilmBriefly[];
+  // filmsList: FilmBriefly[];
 }
 
-function FilmPage({filmsInDetailsList, favoriteFilmsNumber, filmsList}: FilmPageProps): JSX.Element {
-  const { id } = useParams();
-  const currentFilm = filmsInDetailsList.find((film) => film.id === id);
+function FilmPage({favoriteFilmsNumber}: FilmPageProps): JSX.Element {
+  // const { id } = useParams();
+  // if (id) {
+  //   store.dispatch(fetchFilmDetail(id));
+  // }
+  const currentFilm = useAppSelector((state) => state.currentFilmDetails);
+
+  console.log('Current film is: ', currentFilm);
 
   if (!currentFilm) {
     return <NotFoundPage />;
   }
 
-  const sameGenreFilms = shuffleArray(filmsList.filter((film) => film.genre === currentFilm.genre)).slice(0, 4);
+  // const sameGenreFilms = shuffleArray(filmsList.filter((film) => film.genre === currentFilm.genre)).slice(0, 4);
 
   return (
     <>
@@ -90,7 +98,7 @@ function FilmPage({filmsInDetailsList, favoriteFilmsNumber, filmsList}: FilmPage
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmsList filmsList={sameGenreFilms} />
+          {/* <FilmsList filmsList={sameGenreFilms} /> */}
 
         </section>
 
