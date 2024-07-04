@@ -1,35 +1,23 @@
-import { Link, useParams } from 'react-router-dom';
-import { FilmBriefly, FilmInDetails } from '../../types/film';
+import { Link } from 'react-router-dom';
 import NotFoundPage from '../not-found-page/not-found-page';
 import SvgIcon from '../../components/icon';
 import Logo from '../../components/logo';
 import DescriptionTabsComponent from '../../components/descrptiion-tabs/description-tabs-component';
-import { shuffleArray } from '../../utils';
-import FilmsList from '../../components/films-list';
-import { fetchFilmDetail } from '../../store/api-actions';
-import { store } from '../../store';
 import { useAppSelector } from '../../hooks';
+import FilmsList from '../../components/films-list';
 
 type FilmPageProps = {
-  currentFilm: FilmInDetails;
   favoriteFilmsNumber: number;
-  // filmsList: FilmBriefly[];
 }
 
 function FilmPage({favoriteFilmsNumber}: FilmPageProps): JSX.Element {
-  // const { id } = useParams();
-  // if (id) {
-  //   store.dispatch(fetchFilmDetail(id));
-  // }
   const currentFilm = useAppSelector((state) => state.currentFilmDetails);
-
-  console.log('Current film is: ', currentFilm);
+  const currentFilmComments = useAppSelector((state) => state.comments);
+  const sameGenreFilms = useAppSelector((state) => state.similarFilms);
 
   if (!currentFilm) {
     return <NotFoundPage />;
   }
-
-  // const sameGenreFilms = shuffleArray(filmsList.filter((film) => film.genre === currentFilm.genre)).slice(0, 4);
 
   return (
     <>
@@ -89,7 +77,7 @@ function FilmPage({favoriteFilmsNumber}: FilmPageProps): JSX.Element {
               <img src={currentFilm.posterImage} alt={`${currentFilm.name} poster`} width="218" height="327" />
             </div>
 
-            <DescriptionTabsComponent currentFilm={currentFilm} />
+            <DescriptionTabsComponent currentFilm={currentFilm} currentFilmComments={currentFilmComments} />
           </div>
         </div>
       </section>
@@ -98,7 +86,7 @@ function FilmPage({favoriteFilmsNumber}: FilmPageProps): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          {/* <FilmsList filmsList={sameGenreFilms} /> */}
+          <FilmsList filmsList={sameGenreFilms} />
 
         </section>
 

@@ -59,9 +59,7 @@ function App({ filmsBrieflyList, filmsInDetailsList }: AppScreenProps): JSX.Elem
           />
           <Route path={AppRoute.Film} element={
             <FilmPage
-              filmsInDetailsList={filmsInDetailsList}
               favoriteFilmsNumber={favoriteBrieflyFilms.length}
-              filmsList={filmsBrieflyList}
             />
           }
           />
