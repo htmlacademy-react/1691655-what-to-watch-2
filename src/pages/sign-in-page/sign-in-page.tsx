@@ -17,9 +17,12 @@ function SignInPage(): JSX.Element {
 
   const handlePasswordChange = () => {
     if (passwordRef.current) {
-      !regex.test(passwordRef.current.value)
-        ? passwordRef.current.setCustomValidity('Пароль должен состоять минимум из одной буквы и цифры.')
-        : passwordRef.current.setCustomValidity('');
+      if (!regex.test(passwordRef.current.value)) {
+        passwordRef.current.setCustomValidity('Пароль должен состоять минимум из одной буквы и цифры.');
+
+      } else {
+        passwordRef.current.setCustomValidity('');
+      }
     }
   };
 

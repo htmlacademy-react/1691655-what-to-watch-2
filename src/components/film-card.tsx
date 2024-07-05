@@ -1,21 +1,11 @@
 import { Link } from 'react-router-dom';
 import { FilmCardProps } from '../types/film';
-import { store } from '../store';
-import { fetchComments, fetchFilmDetail, fetchSimilarFilms } from '../store/api-actions';
 
 function FilmCard({filmBriefly, onMouseLeave, onMouseOver, isPlayerActive, renderPlayer}: FilmCardProps): JSX.Element {
-  const filmId = filmBriefly.id;
-
-  const handleClick = () => {
-    store.dispatch(fetchFilmDetail(filmId));
-    store.dispatch(fetchSimilarFilms(filmId));
-    store.dispatch(fetchComments(filmId));
-  }
 
   return (
     <Link
-      to={`/film/${filmId}`}
-      onClick={handleClick}
+      to={`/film/${filmBriefly.id}`}
       className="small-film-card catalog__films-card"
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}

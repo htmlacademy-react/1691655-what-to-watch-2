@@ -1,17 +1,32 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import NotFoundPage from '../not-found-page/not-found-page';
 import SvgIcon from '../../components/icon';
 import Logo from '../../components/logo';
 import DescriptionTabsComponent from '../../components/descrptiion-tabs/description-tabs-component';
 import { useAppSelector } from '../../hooks';
 import FilmsList from '../../components/films-list';
+import { store } from '../../store';
+import { fetchComments, fetchFilmDetail, fetchSimilarFilms } from '../../store/api-actions';
 
 type FilmPageProps = {
   favoriteFilmsNumber: number;
 }
 
 function FilmPage({favoriteFilmsNumber}: FilmPageProps): JSX.Element {
-  const currentFilm = useAppSelector((state) => state.currentFilmDetails);
+  const {id: filmId} = useParams();
+  let currentFilm = useAppSelector((state) => state.currentFilmDetails);
+
+  // console.log('film in state is: ', currentFilm);
+
+  if (filmId && filmId !== currentFilm.id) {
+    // console.log('fetching..');
+
+    store.dispatch(fetchFilmDetail(filmId));
+    store.dispatch(fetchSimilarFilms(filmId));
+    store.dispatch(fetchComments(filmId));
+  }
+
+  currentFilm = useAppSelector((state) => state.currentFilmDetails);
   const currentFilmComments = useAppSelector((state) => state.comments);
   const sameGenreFilms = useAppSelector((state) => state.similarFilms);
 

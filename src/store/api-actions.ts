@@ -86,7 +86,7 @@ export const fetchComments = createAsyncThunk<
   dispatch(setFilmsDataLoadingStatus(false));
 
   dispatch(loadComments(data));
-})
+});
 
 export const checkAuth = createAsyncThunk<
   void,
