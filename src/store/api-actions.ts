@@ -5,6 +5,7 @@ import { FilmBriefly, FilmComment, FilmInDetails } from '../types/film';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import {
   loadComments,
+  loadFavoriteFilms,
   loadFilmDetails,
   loadFilms,
   loadSimilarFilms,
@@ -34,12 +35,29 @@ export const fetchFilms = createAsyncThunk<
   const { data } = await api.get<FilmBriefly[]>(APIRoute.Films);
   dispatch(setFilmsDataLoadingStatus(false));
 
+  console.log('fetch all films..');
+
   dispatch(loadFilms(data));
 });
 
+// Запрашивает список фильмов к просмотру
+export const fetchFavoriteFilms = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchFavoriteFilms', async(_args, { dispatch, extra: api}) => {
+  const { data } = await api.get<FilmBriefly[]>(APIRoute.Favorites);
+
+  dispatch(loadFavoriteFilms(data));
+})
+
 // Запрашивает детальную информацию о фильме
 export const fetchFilmDetail = createAsyncThunk<
-  void,
+  FilmInDetails,
   string,
   {
     dispatch: AppDispatch;
@@ -51,7 +69,10 @@ export const fetchFilmDetail = createAsyncThunk<
   const { data } = await api.get<FilmInDetails>(`${APIRoute.Films}/${id}`);
   dispatch(setFilmsDataLoadingStatus(false));
 
-  dispatch(loadFilmDetails(data));
+  console.log('fetch films details..', data);
+
+  // dispatch(loadFilmDetails(data));
+  return data;
 });
 
 // Запрашивает список похожих фильмов
@@ -67,6 +88,8 @@ export const fetchSimilarFilms = createAsyncThunk<
   dispatch(setFilmsDataLoadingStatus(true));
   const { data } = await api.get<FilmBriefly[]>(`${APIRoute.Films}/${id}/similar`);
   dispatch(setFilmsDataLoadingStatus(false));
+
+  console.log('fetch similar films..');
 
   dispatch(loadSimilarFilms(data));
 });
@@ -84,6 +107,8 @@ export const fetchComments = createAsyncThunk<
   dispatch(setFilmsDataLoadingStatus(true));
   const { data } = await api.get<FilmComment[]>(`${APIRoute.Comments}/${id}`);
   dispatch(setFilmsDataLoadingStatus(false));
+
+  console.log('fetch comments..');
 
   dispatch(loadComments(data));
 });

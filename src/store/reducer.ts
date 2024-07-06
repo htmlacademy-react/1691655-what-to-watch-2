@@ -1,13 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, loadComments, loadFilmDetails, loadFilms, loadSimilarFilms, requireAuthorization, saveAvatarUrl, setError, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
+import { changeGenre, loadComments, loadFavoriteFilms, loadFilmDetails, loadFilms, loadSimilarFilms, requireAuthorization, saveAvatarUrl, setError, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
 import { ALL_GENRES, AuthorizationStatus, Setting } from '../const';
 import { FilmBriefly, FilmComment, FilmInDetails } from '../types/film';
 
 type InitialState = {
   genre: string;
   allFilms: FilmBriefly[];
+  favoriteFilms: FilmBriefly[];
   filmsToShow: FilmBriefly[];
-  currentFilmDetails: FilmInDetails;
+  // currentFilmDetails: FilmInDetails;
   similarFilms: FilmBriefly[];
   comments: FilmComment[];
   genresList: string[];
@@ -21,8 +22,9 @@ type InitialState = {
 const initialState: InitialState = {
   genre: ALL_GENRES,
   allFilms: [],
+  favoriteFilms: [],
   filmsToShow: [],
-  currentFilmDetails: {} as FilmInDetails,
+  // currentFilmDetails: {} as FilmInDetails,
   similarFilms: [],
   comments: [],
   genresList: [],
@@ -61,9 +63,13 @@ export const reducer = createReducer(initialState, (builder) => {
       state.genresList = [ALL_GENRES].concat([...new Set(action.payload.map((film) => film.genre))]);
     })
 
-    .addCase(loadFilmDetails, (state, action) => {
-      state.currentFilmDetails = action.payload;
+    .addCase(loadFavoriteFilms, (state, action) => {
+      state.favoriteFilms = action.payload;
     })
+
+    // .addCase(loadFilmDetails, (state, action) => {
+    //   state.currentFilmDetails = action.payload;
+    // })
 
     .addCase(loadSimilarFilms, (state, action) => {
       state.similarFilms = action.payload;

@@ -16,10 +16,10 @@ function FilmPage({favoriteFilmsNumber}: FilmPageProps): JSX.Element {
   const {id: filmId} = useParams();
   let currentFilm = useAppSelector((state) => state.currentFilmDetails);
 
-  // console.log('film in state is: ', currentFilm);
+  console.log('film in state is: ', currentFilm);
 
   if (filmId && filmId !== currentFilm.id) {
-    // console.log('fetching..');
+    console.log('fetching..');
 
     store.dispatch(fetchFilmDetail(filmId));
     store.dispatch(fetchSimilarFilms(filmId));

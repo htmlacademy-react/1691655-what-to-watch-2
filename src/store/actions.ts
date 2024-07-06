@@ -8,6 +8,8 @@ export const showMoreFilms = createAction('welcomePage/showMoreFilms');
 
 export const loadFilms = createAction<FilmBriefly[]>('data/loadFilms');
 
+export const loadFavoriteFilms = createAction<FilmBriefly[]>('data/loadFavoriteFilms');
+
 export const loadFilmDetails = createAction<FilmInDetails>('data/loadFilmDetails');
 
 export const loadSimilarFilms = createAction<FilmBriefly[]>('data/loadSimilarFilms');

@@ -25,6 +25,7 @@ export const enum Tabs {
 
 export enum APIRoute {
   Films = '/films',
+  Favorites = '/favorite',
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments',
