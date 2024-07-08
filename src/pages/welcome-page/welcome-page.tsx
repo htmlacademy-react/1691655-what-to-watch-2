@@ -6,19 +6,31 @@ import Logo from '../../components/logo';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GenresList } from '../../components/genres-list';
 import { ShowMoreButton } from '../../components/show-more-button';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { APIRoute, AppRoute, AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-actions';
+import { useEffect, useState } from 'react';
+import { createApi } from '../../services/api';
 
-type WecomeScreenProps = {
-  welcomeFilm: FilmInDetails;
-  favoriteFilmsNumber: number;
-};
 
-function WelcomePage({
-  welcomeFilm,
-  favoriteFilmsNumber,
-}: WecomeScreenProps): JSX.Element {
+function WelcomePage(): JSX.Element {
+  const [welcomeRandomFilm, setWelcomeRandomFilm] = useState<FilmInDetails>({} as FilmInDetails);
   const currentFilms = useAppSelector((state) => state.filmsToShow);
+
+  useEffect(() => {
+    async function getRandomFilmDetail() {
+      const api = createApi();
+      const id = currentFilms[Math.floor(Math.random() * currentFilms.length)].id;
+      const { data } = await api.get<FilmInDetails>(`${APIRoute.Films}/${id}`);
+
+      setWelcomeRandomFilm(data);
+    }
+
+    if (Object.keys(welcomeRandomFilm).length === 0) {
+      getRandomFilmDetail();
+    }
+  }, []);
+
+  const favoriteFilms = useAppSelector((state) => state.favoriteFilms);
   const genresList = useAppSelector((state) => state.genresList);
   const showedFilmsNumber = useAppSelector((state) => state.showedFilmsNumber);
   const totalFilmsNumber = useAppSelector((state) => state.filmsToShow.length);
@@ -37,7 +49,7 @@ function WelcomePage({
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={welcomeFilm.backgroundImage} alt={welcomeFilm.name} />
+          <img src={welcomeRandomFilm.backgroundImage} alt={welcomeRandomFilm.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -79,23 +91,23 @@ function WelcomePage({
           <div className="film-card__info">
             <div className="film-card__poster">
               <img
-                src={welcomeFilm.posterImage}
-                alt={`${welcomeFilm.name} poster`}
+                src={welcomeRandomFilm.posterImage}
+                alt={`${welcomeRandomFilm.name} poster`}
                 width="218"
                 height="327"
               />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{welcomeFilm.name}</h2>
+              <h2 className="film-card__title">{welcomeRandomFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{welcomeFilm.genre}</span>
-                <span className="film-card__year">{welcomeFilm.released}</span>
+                <span className="film-card__genre">{welcomeRandomFilm.genre}</span>
+                <span className="film-card__year">{welcomeRandomFilm.released}</span>
               </p>
               <div className="film-card__buttons">
                 <Link
                   className="btn btn--play film-card__button"
-                  to={`/player/${welcomeFilm.id}`}
+                  to={`/player/${welcomeRandomFilm.id}`}
                 >
                   <SvgIcon
                     viewBoxSize={[19, 19]}
@@ -116,7 +128,7 @@ function WelcomePage({
                   />
                   <span>My list</span>
                   <span className="film-card__count">
-                    {favoriteFilmsNumber}
+                    {favoriteFilms.length}
                   </span>
                 </Link>
               </div>

@@ -1,20 +1,18 @@
-import { FilmBriefly } from '../../types/film';
 import Logo from '../../components/logo';
 import withVideoPlayer from '../../hocs/with-video-player';
 import FilmCard from '../../components/film-card';
-
-type MyListPageProps = {
-  favoriteFilmsList: FilmBriefly[];
-}
+import { useAppSelector } from '../../hooks';
 
 const FilmCardWrapped = withVideoPlayer(FilmCard);
 
-function MyListPage({favoriteFilmsList}: MyListPageProps): JSX.Element {
+function MyListPage(): JSX.Element {
+  const favoriteFilms = useAppSelector((state) => state.favoriteFilms);
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
         <Logo />
-        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">{favoriteFilmsList.length}</span></h1>
+        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">{favoriteFilms.length}</span></h1>
         <ul className="user-block">
           <li className="user-block__item">
             <div className="user-block__avatar">
@@ -32,12 +30,13 @@ function MyListPage({favoriteFilmsList}: MyListPageProps): JSX.Element {
 
         <div className="catalog__films-list">
           {
-            favoriteFilmsList
+            favoriteFilms
               .map(
                 (film) => (
                   <FilmCardWrapped
                     key={`${film.id}`}
                     filmBriefly={film}
+                    filmsList={favoriteFilms}
                   />)
               )
           }

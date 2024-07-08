@@ -20,7 +20,7 @@ import { dropToken, saveToken } from '../services/token';
 import { store } from '.';
 
 
-// Запрашивает список фильмов с краткой информацией
+// ЗАПРАШИВАЕТ СПИСОК ФИЛЬМОВ С КРАТКОЙ ИНФОРМАЦИЕЙ
 export const fetchFilms = createAsyncThunk<
   void,
   undefined,
@@ -30,17 +30,15 @@ export const fetchFilms = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('data/fetchFilms', async (_args, { dispatch, extra: api }) => {
-  // Показывает спиннер на время загрузки
+  // ПОКАЗЫВАЕТ СПИННЕР НА ВРЕМЯ ЗАГРУЗКИ
   dispatch(setFilmsDataLoadingStatus(true));
   const { data } = await api.get<FilmBriefly[]>(APIRoute.Films);
   dispatch(setFilmsDataLoadingStatus(false));
 
-  console.log('fetch all films..');
-
   dispatch(loadFilms(data));
 });
 
-// Запрашивает список фильмов к просмотру
+// ЗАПРАШИВАЕТ СПИСОК ФИЛЬМОВ К ПРОСМОТРУ
 export const fetchFavoriteFilms = createAsyncThunk<
   void,
   undefined,
@@ -50,12 +48,12 @@ export const fetchFavoriteFilms = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('data/fetchFavoriteFilms', async(_args, { dispatch, extra: api}) => {
-  const { data } = await api.get<FilmBriefly[]>(APIRoute.Favorites);
+  const { data } = await api.get<FilmBriefly[]>(APIRoute.Favorite);
 
   dispatch(loadFavoriteFilms(data));
-})
+});
 
-// Запрашивает детальную информацию о фильме
+// ЗАПРАШИВАЕТ ДЕТАЛЬНУЮ ИНФОРМАЦИЮ О ФИЛЬМЕ
 export const fetchFilmDetail = createAsyncThunk<
   FilmInDetails,
   string,
@@ -69,13 +67,13 @@ export const fetchFilmDetail = createAsyncThunk<
   const { data } = await api.get<FilmInDetails>(`${APIRoute.Films}/${id}`);
   dispatch(setFilmsDataLoadingStatus(false));
 
-  console.log('fetch films details..', data);
+  // console.log('fetch films details..', data);
 
-  // dispatch(loadFilmDetails(data));
+  dispatch(loadFilmDetails(data));
   return data;
 });
 
-// Запрашивает список похожих фильмов
+// ЗАПРАШИВАЕТ СПИСОК ПОХОЖИХ ФИЛЬМОВ
 export const fetchSimilarFilms = createAsyncThunk<
   void,
   string,
@@ -89,12 +87,30 @@ export const fetchSimilarFilms = createAsyncThunk<
   const { data } = await api.get<FilmBriefly[]>(`${APIRoute.Films}/${id}/similar`);
   dispatch(setFilmsDataLoadingStatus(false));
 
-  console.log('fetch similar films..');
+  // console.log('fetch similar films..');
 
   dispatch(loadSimilarFilms(data));
 });
 
-// Запрашивает список комментариев к фильму
+// ИЗМЕНЯЕТ СТАТУС ФИЛЬМА К ПРОСМОТРУ
+export const postFavoriteStatus = createAsyncThunk<
+  void,
+  {
+    id:string;
+    status: number;
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/postFavoriteStatus', async ({id, status}, {dispatch, extra: api}) => {
+  const { data } = await api.post<FilmInDetails>(`${APIRoute.Favorite}/${id}/${status}`);
+
+  dispatch(loadFilmDetails(data));
+});
+
+// ЗАПРАШИВАЕТ СПИСОК КОММЕНТАРИЕВ К ФИЛЬМУ
 export const fetchComments = createAsyncThunk<
   void,
   string,
@@ -108,7 +124,7 @@ export const fetchComments = createAsyncThunk<
   const { data } = await api.get<FilmComment[]>(`${APIRoute.Comments}/${id}`);
   dispatch(setFilmsDataLoadingStatus(false));
 
-  console.log('fetch comments..');
+  // console.log('fetch comments..');
 
   dispatch(loadComments(data));
 });

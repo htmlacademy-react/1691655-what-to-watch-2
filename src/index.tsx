@@ -7,7 +7,7 @@ import { checkAuth, fetchFavoriteFilms, fetchFilms } from './store/api-actions';
 import { ErrorMessage } from './components/error-message/error-message';
 
 store.dispatch(fetchFilms());
-store.dispatch(fetchFavoriteFilms);
+store.dispatch(fetchFavoriteFilms());
 store.dispatch(checkAuth());
 
 const root = ReactDOM.createRoot(

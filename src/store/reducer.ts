@@ -8,7 +8,7 @@ type InitialState = {
   allFilms: FilmBriefly[];
   favoriteFilms: FilmBriefly[];
   filmsToShow: FilmBriefly[];
-  // currentFilmDetails: FilmInDetails;
+  currentFilmDetails: FilmInDetails;
   similarFilms: FilmBriefly[];
   comments: FilmComment[];
   genresList: string[];
@@ -24,7 +24,7 @@ const initialState: InitialState = {
   allFilms: [],
   favoriteFilms: [],
   filmsToShow: [],
-  // currentFilmDetails: {} as FilmInDetails,
+  currentFilmDetails: {} as FilmInDetails,
   similarFilms: [],
   comments: [],
   genresList: [],
@@ -67,9 +67,9 @@ export const reducer = createReducer(initialState, (builder) => {
       state.favoriteFilms = action.payload;
     })
 
-    // .addCase(loadFilmDetails, (state, action) => {
-    //   state.currentFilmDetails = action.payload;
-    // })
+    .addCase(loadFilmDetails, (state, action) => {
+      state.currentFilmDetails = action.payload;
+    })
 
     .addCase(loadSimilarFilms, (state, action) => {
       state.similarFilms = action.payload;
