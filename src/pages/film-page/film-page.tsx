@@ -23,15 +23,7 @@ type FilmPageProps = {
 function FilmPage({ favoriteFilmsNumber }: FilmPageProps): JSX.Element {
   const { id: filmId } = useParams();
   const dispatch = useAppDispatch();
-  let currentFilm = useAppSelector((state) => state.currentFilmDetails);
-
-  if (filmId && filmId !== currentFilm.id) {
-    dispatch(fetchFilmDetail(filmId));
-    dispatch(fetchSimilarFilms(filmId));
-    dispatch(fetchComments(filmId));
-  }
-  currentFilm = useAppSelector((state) => state.currentFilmDetails);
-
+  const currentFilm = useAppSelector((state) => state.currentFilmDetails);
   const currentFilmComments = useAppSelector((state) => state.comments);
   const sameGenreFilms = useAppSelector((state) => state.similarFilms);
 
@@ -41,7 +33,7 @@ function FilmPage({ favoriteFilmsNumber }: FilmPageProps): JSX.Element {
       dispatch(fetchSimilarFilms(filmId));
       dispatch(fetchComments(filmId));
     }
-  }, [])
+  }, []);
 
   const onClickFavorite = () => {
     if (filmId) {
@@ -60,7 +52,7 @@ function FilmPage({ favoriteFilmsNumber }: FilmPageProps): JSX.Element {
   }
 
   if (Object.keys(currentFilm).length === 0) {
-    return <LoadingScreen />
+    return <LoadingScreen />;
   }
 
   return (
@@ -100,7 +92,7 @@ function FilmPage({ favoriteFilmsNumber }: FilmPageProps): JSX.Element {
                 </Link>
                 <Link
                   className="btn btn--play film-card__button"
-                  to={'/my-list'}
+                  to={{}}
                   onClick={onClickFavorite}
                 >
                   {currentFilm.isFavorite ? (

@@ -6,16 +6,27 @@ import FilmPage from '../../pages/film-page/film-page';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { HelmetProvider } from 'react-helmet-async';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
+import { fetchFavoriteFilms } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function App(): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const authorizationStatus = useAppSelector(
     (state) => state.authorizationStatus
   );
   const isFilmsLoading = useAppSelector((state) => state.isFilmsLoading);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteFilms());
+    }
+  }, [authorizationStatus]);
+
   const favoriteFilmsNumber = useAppSelector(
     (state) => state.favoriteFilms
   ).length;

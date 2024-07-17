@@ -35,8 +35,6 @@ function WelcomePage(): JSX.Element {
   const showedFilmsNumber = useAppSelector((state) => state.showedFilmsNumber);
   const totalFilmsNumber = useAppSelector((state) => state.filmsToShow.length);
 
-  console.log('welcome page rendering..');
-  
   return (
     <>
       <section className="film-card">

@@ -201,6 +201,7 @@ export const logoutAction = createAsyncThunk<
   dropToken();
   dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   dispatch(saveAvatarUrl(null));
+  dispatch(loadFavoriteFilms([]));
 });
 
 export const clearErrorAction = createAsyncThunk('server/clearError', () => {
