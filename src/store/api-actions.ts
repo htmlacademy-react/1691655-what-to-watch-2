@@ -4,6 +4,7 @@ import { AxiosInstance } from 'axios';
 import { FilmBriefly, FilmComment, FilmInDetails } from '../types/film';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import {
+  addComment,
   loadComments,
   loadFavoriteFilms,
   loadFilmDetails,
@@ -67,7 +68,7 @@ export const fetchFilmDetail = createAsyncThunk<
   const { data } = await api.get<FilmInDetails>(`${APIRoute.Films}/${id}`);
   dispatch(setFilmsDataLoadingStatus(false));
 
-  // console.log('fetch films details..', data);
+  // console.log('fetch films details..');
 
   dispatch(loadFilmDetails(data));
   return data;
@@ -124,9 +125,28 @@ export const fetchComments = createAsyncThunk<
   const { data } = await api.get<FilmComment[]>(`${APIRoute.Comments}/${id}`);
   dispatch(setFilmsDataLoadingStatus(false));
 
-  // console.log('fetch comments..');
+  // console.log('fetch comments.. ');
 
   dispatch(loadComments(data));
+});
+
+// ОТПРАВЛЯЕТ НОВЫЙ КОММЕНТАРИЙ К ФИЛЬМУ
+export const postReview = createAsyncThunk<
+  void,
+  {
+    filmId: string;
+    comment: string;
+    rating: number;
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/postReview', async ({filmId, comment, rating}, {dispatch, extra: api}) => {
+  const { data } = await api.post<FilmComment>(`${APIRoute.Comments}/${filmId}`, {comment, rating});
+
+  dispatch(addComment(data));
 });
 
 export const checkAuth = createAsyncThunk<

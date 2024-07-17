@@ -16,6 +16,8 @@ export const loadSimilarFilms = createAction<FilmBriefly[]>('data/loadSimilarFil
 
 export const loadComments = createAction<FilmComment[]>('data/loadComments');
 
+export const addComment = createAction<FilmComment>('data/addComment');
+
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
 export const setFilmsDataLoadingStatus = createAction<boolean>('data/setFilmsDataLoadingStatus');

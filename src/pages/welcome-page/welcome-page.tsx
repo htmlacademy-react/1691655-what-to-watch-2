@@ -3,13 +3,13 @@ import FilmsList from '../../components/films-list';
 import { FilmInDetails } from '../../types/film';
 import SvgIcon from '../../components/icon';
 import Logo from '../../components/logo';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { GenresList } from '../../components/genres-list';
 import { ShowMoreButton } from '../../components/show-more-button';
-import { APIRoute, AppRoute, AuthorizationStatus } from '../../const';
-import { logoutAction } from '../../store/api-actions';
+import { APIRoute } from '../../const';
 import { useEffect, useState } from 'react';
 import { createApi } from '../../services/api';
+import { LoginButton } from '../../components/login-button';
 
 
 function WelcomePage(): JSX.Element {
@@ -34,17 +34,9 @@ function WelcomePage(): JSX.Element {
   const genresList = useAppSelector((state) => state.genresList);
   const showedFilmsNumber = useAppSelector((state) => state.showedFilmsNumber);
   const totalFilmsNumber = useAppSelector((state) => state.filmsToShow.length);
-  const avatarUrl = useAppSelector((state) => state.avatarUrl);
-  const isAuth =
-    useAppSelector((state) => state.authorizationStatus) ===
-    AuthorizationStatus.Auth;
 
-  const dispatch = useAppDispatch();
-
-  const onSignOut = () => {
-    dispatch(logoutAction());
-  };
-
+  console.log('welcome page rendering..');
+  
   return (
     <>
       <section className="film-card">
@@ -56,35 +48,7 @@ function WelcomePage(): JSX.Element {
 
         <header className="page-header film-card__head">
           <Logo />
-          {isAuth ? (
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img
-                    src={avatarUrl ? avatarUrl : ''}
-                    alt="User avatar"
-                    width="63"
-                    height="63"
-                  />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <Link
-                  onClick={onSignOut}
-                  to={AppRoute.Root}
-                  className="user-block__link"
-                >
-                  Sign out
-                </Link>
-              </li>
-            </ul>
-          ) : (
-            <div className="user-block">
-              <Link to={AppRoute.Login} className="user-block__link">
-                Sign in
-              </Link>
-            </div>
-          )}
+          <LoginButton />
         </header>
 
         <div className="film-card__wrap">

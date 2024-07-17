@@ -5,7 +5,6 @@ import Logo from '../../components/logo';
 import DescriptionTabsComponent from '../../components/descrptiion-tabs/description-tabs-component';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import FilmsList from '../../components/films-list';
-import { store } from '../../store';
 import {
   fetchComments,
   fetchFavoriteFilms,
@@ -13,26 +12,36 @@ import {
   fetchSimilarFilms,
   postFavoriteStatus,
 } from '../../store/api-actions';
+import { LoginButton } from '../../components/login-button';
+import { useEffect } from 'react';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 type FilmPageProps = {
   favoriteFilmsNumber: number;
 };
 
 function FilmPage({ favoriteFilmsNumber }: FilmPageProps): JSX.Element {
-  const dispatch = useAppDispatch();
   const { id: filmId } = useParams();
-
+  const dispatch = useAppDispatch();
   let currentFilm = useAppSelector((state) => state.currentFilmDetails);
 
   if (filmId && filmId !== currentFilm.id) {
-    store.dispatch(fetchFilmDetail(filmId));
-    store.dispatch(fetchSimilarFilms(filmId));
-    store.dispatch(fetchComments(filmId));
+    dispatch(fetchFilmDetail(filmId));
+    dispatch(fetchSimilarFilms(filmId));
+    dispatch(fetchComments(filmId));
   }
   currentFilm = useAppSelector((state) => state.currentFilmDetails);
 
   const currentFilmComments = useAppSelector((state) => state.comments);
   const sameGenreFilms = useAppSelector((state) => state.similarFilms);
+
+  useEffect(() => {
+    if (filmId && filmId !== currentFilm.id) {
+      dispatch(fetchFilmDetail(filmId));
+      dispatch(fetchSimilarFilms(filmId));
+      dispatch(fetchComments(filmId));
+    }
+  }, [])
 
   const onClickFavorite = () => {
     if (filmId) {
@@ -50,6 +59,10 @@ function FilmPage({ favoriteFilmsNumber }: FilmPageProps): JSX.Element {
     return <NotFoundPage />;
   }
 
+  if (Object.keys(currentFilm).length === 0) {
+    return <LoadingScreen />
+  }
+
   return (
     <>
       <section className="film-card film-card--full">
@@ -62,24 +75,7 @@ function FilmPage({ favoriteFilmsNumber }: FilmPageProps): JSX.Element {
 
           <header className="page-header film-card__head">
             <Logo />
-
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img
-                    src="img/avatar.jpg"
-                    alt="User avatar"
-                    width="63"
-                    height="63"
-                  />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <Link to="#" className="user-block__link">
-                  Sign out
-                </Link>
-              </li>
-            </ul>
+            <LoginButton />
           </header>
 
           <div className="film-card__wrap">
