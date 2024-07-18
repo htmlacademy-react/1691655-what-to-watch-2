@@ -1,38 +1,67 @@
-import { Link, useParams } from 'react-router-dom';
-import { FilmInDetails } from '../../types/film';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { MAXIMUM_REVIEW_STARS, MINIMUM_REVIEW_LENGTH } from '../../const';
+import { postReview } from '../../store/api-actions';
+import { LoginButton } from '../../components/login-button';
+import Logo from '../../components/logo';
 
-type AddReviewPageProps = {
-  filmsInDetailsList: FilmInDetails[];
-}
+function AddReviewPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const navigate = useNavigate();
+  const [starRating, setStarRating] = useState<number>(0);
 
-function AddReviewPage({filmsInDetailsList}: AddReviewPageProps): JSX.Element {
-  const { id } = useParams();
-  const [reviewText, setReviewText] = useState('');
-  const currentFilm = filmsInDetailsList.find((film) => film.id === id) as FilmInDetails;
+  const currentFilm = useAppSelector((state) => state.currentFilmDetails);
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    dispatch(
+      postReview({
+        filmId: currentFilm.id,
+        comment: textAreaRef.current!.value,
+        rating: starRating,
+      })
+    );
+
+    navigate(`/film/${currentFilm.id}`);
+  };
+
+  const handleStarChange = (evt: FormEvent<HTMLInputElement>) => {
+    setStarRating(MAXIMUM_REVIEW_STARS - Number(evt.currentTarget.value) + 1);
+  };
+
+  const handleChangeText = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    if (evt.target.value.length > MINIMUM_REVIEW_LENGTH) {
+      textAreaRef.current?.setCustomValidity('');
+    } else {
+      textAreaRef.current?.setCustomValidity('Отзыв должен состоять из 50 символов минимум');
+    }
+  };
 
   return (
-    <section className="film-card film-card--full" id={reviewText}>
+    <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={currentFilm.backgroundImage} alt="The Grand Budapest Hotel" />
+          <img
+            src={currentFilm.backgroundImage}
+            alt="The Grand Budapest Hotel"
+          />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header">
-          <div className="logo">
-            <Link to="/" className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>
-          </div>
+          <Logo />
 
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">{currentFilm.name}</a>
+                <a href="film-page.html" className="breadcrumbs__link">
+                  {currentFilm.name}
+                </a>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>
@@ -40,76 +69,67 @@ function AddReviewPage({filmsInDetailsList}: AddReviewPageProps): JSX.Element {
             </ul>
           </nav>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <LoginButton />
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={currentFilm.posterImage} alt={`${currentFilm.name} poster`} width="218" height="327" />
+          <img
+            src={currentFilm.posterImage}
+            alt={`${currentFilm.name} poster`}
+            width="218"
+            height="327"
+          />
         </div>
       </div>
 
       <div className="add-review">
-        <form action="#" className="add-review__form">
+        <form action="#" onSubmit={handleSubmit} className="add-review__form">
           <div className="rating">
             <div className="rating__stars">
-              <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
-              <label className="rating__label" htmlFor="star-10">Rating 10</label>
-
-              <input className="rating__input" id="star-9" type="radio" name="rating" value="9" />
-              <label className="rating__label" htmlFor="star-9">Rating 9</label>
-
-              <input className="rating__input" id="star-8" type="radio" name="rating" value="8" checked />
-              <label className="rating__label" htmlFor="star-8">Rating 8</label>
-
-              <input className="rating__input" id="star-7" type="radio" name="rating" value="7" />
-              <label className="rating__label" htmlFor="star-7">Rating 7</label>
-
-              <input className="rating__input" id="star-6" type="radio" name="rating" value="6" />
-              <label className="rating__label" htmlFor="star-6">Rating 6</label>
-
-              <input className="rating__input" id="star-5" type="radio" name="rating" value="5" />
-              <label className="rating__label" htmlFor="star-5">Rating 5</label>
-
-              <input className="rating__input" id="star-4" type="radio" name="rating" value="4" />
-              <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-              <input className="rating__input" id="star-3" type="radio" name="rating" value="3" />
-              <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-              <input className="rating__input" id="star-2" type="radio" name="rating" value="2" />
-              <label className="rating__label" htmlFor="star-2">Rating 2</label>
-
-              <input className="rating__input" id="star-1" type="radio" name="rating" value="1" />
-              <label className="rating__label" htmlFor="star-1">Rating 1</label>
+              {
+                Array.from(Array(MAXIMUM_REVIEW_STARS), (el, index) => (
+                  <React.Fragment key={index}>
+                    <input
+                      className="rating__input"
+                      id={`star-${index + 1}`}
+                      type="radio"
+                      name="rating"
+                      value={index + 1}
+                      onChange={handleStarChange}
+                    />
+                    <label
+                      className="rating__label"
+                      htmlFor={`star-${index + 1}`}
+                    >
+                      Rating ${index + 1}
+                    </label>
+                  </React.Fragment>
+                ))
+              }
             </div>
           </div>
 
           <div className="add-review__text">
             <textarea
+              ref={textAreaRef}
               className="add-review__textarea"
               name="review-text"
               id="review-text"
               placeholder="Review text"
-              onChange={(e) => setReviewText(e.target.value)}
+              onChange={handleChangeText}
             >
             </textarea>
             <div className="add-review__submit">
-              <button className="add-review__btn" type="submit">Post</button>
+              <button
+                className="add-review__btn"
+                type="submit"
+              >
+                Post
+              </button>
             </div>
-
           </div>
         </form>
       </div>
-
     </section>
   );
 }

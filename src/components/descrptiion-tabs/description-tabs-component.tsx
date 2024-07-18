@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FilmInDetails } from '../../types/film';
+import { FilmComment, FilmInDetails } from '../../types/film';
 import { Tabs } from '../../const';
 import OverviewTab from './overview-tab';
 import DetailsTab from './details-tab';
@@ -8,10 +8,11 @@ import ReviewsTab from './reviews-tab';
 
 type TabsProps = {
   currentFilm: FilmInDetails;
+  currentFilmComments: FilmComment[];
 }
 
 function DescriptionTabsComponent (props: TabsProps): JSX.Element {
-  const {currentFilm} = props;
+  const {currentFilm, currentFilmComments} = props;
   const [currentTab, setCurrentTab] = useState(Tabs.Overview);
 
   return (
@@ -31,7 +32,7 @@ function DescriptionTabsComponent (props: TabsProps): JSX.Element {
           case Tabs.Details:
             return <DetailsTab {...currentFilm} />;
           case Tabs.Reviews:
-            return <ReviewsTab />;
+            return <ReviewsTab filmComments={currentFilmComments}/>;
         }
       })()}
     </div>

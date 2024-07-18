@@ -1,12 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeGenre, loadFilms, requireAuthorization, saveAvatarUrl, setError, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
+import { addComment, changeGenre, loadComments, loadFavoriteFilms, loadFilmDetails, loadFilms, loadSimilarFilms, requireAuthorization, saveAvatarUrl, setError, setFilmsDataLoadingStatus, showMoreFilms } from './actions';
 import { ALL_GENRES, AuthorizationStatus, Setting } from '../const';
-import { FilmBriefly } from '../types/film';
+import { FilmBriefly, FilmComment, FilmInDetails } from '../types/film';
 
 type InitialState = {
   genre: string;
   allFilms: FilmBriefly[];
+  favoriteFilms: FilmBriefly[];
   filmsToShow: FilmBriefly[];
+  currentFilmDetails: FilmInDetails;
+  similarFilms: FilmBriefly[];
+  comments: FilmComment[];
   genresList: string[];
   showedFilmsNumber: number;
   authorizationStatus: AuthorizationStatus;
@@ -18,7 +22,11 @@ type InitialState = {
 const initialState: InitialState = {
   genre: ALL_GENRES,
   allFilms: [],
+  favoriteFilms: [],
   filmsToShow: [],
+  currentFilmDetails: {} as FilmInDetails,
+  similarFilms: [],
+  comments: [],
   genresList: [],
   showedFilmsNumber: Setting.filmCardsNumber,
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -53,6 +61,26 @@ export const reducer = createReducer(initialState, (builder) => {
       state.allFilms = action.payload;
       state.filmsToShow = action.payload;
       state.genresList = [ALL_GENRES].concat([...new Set(action.payload.map((film) => film.genre))]);
+    })
+
+    .addCase(loadFavoriteFilms, (state, action) => {
+      state.favoriteFilms = action.payload;
+    })
+
+    .addCase(loadFilmDetails, (state, action) => {
+      state.currentFilmDetails = action.payload;
+    })
+
+    .addCase(loadSimilarFilms, (state, action) => {
+      state.similarFilms = action.payload;
+    })
+
+    .addCase(loadComments, (state, action) => {
+      state.comments = action.payload;
+    })
+
+    .addCase(addComment, (state, action) => {
+      state.comments.push(action.payload);
     })
 
     .addCase(requireAuthorization, (state, action) => {

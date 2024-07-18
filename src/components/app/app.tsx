@@ -3,72 +3,70 @@ import WelcomePage from '../../pages/welcome-page/welcome-page';
 import SignInPage from '../../pages/sign-in-page/sign-in-page';
 import MyListPage from '../../pages/my-list-page/my-list-page';
 import FilmPage from '../../pages/film-page/film-page';
-import AddReviewPage from '../../pages/add-review-page/add-review-page';
-import PlayerPage from '../../pages/player-page/player-page';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
-import { FilmBriefly, FilmInDetails } from '../../types/film';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { HelmetProvider } from 'react-helmet-async';
+import AddReviewPage from '../../pages/add-review-page/add-review-page';
+import { fetchFavoriteFilms } from '../../store/api-actions';
+import { useEffect } from 'react';
 
-type AppScreenProps = {
-  filmsBrieflyList: FilmBriefly[];
-  filmsInDetailsList: FilmInDetails[];
-}
+function App(): JSX.Element {
+  const dispatch = useAppDispatch();
 
-function App({ filmsBrieflyList, filmsInDetailsList }: AppScreenProps): JSX.Element {
-  const favoriteFilmsInDetails = filmsInDetailsList.filter((film) => film.isFavorite);
-  const findBrieflyFilmById = (id: string) => filmsBrieflyList.find((brieflyFilm) => brieflyFilm.id === id) as FilmBriefly;
-  const favoriteBrieflyFilms = favoriteFilmsInDetails.map((film) => findBrieflyFilmById(film.id));
-  const welcomeRandomFilm = filmsInDetailsList[Math.floor(Math.random() * filmsInDetailsList.length)];
-
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
   const isFilmsLoading = useAppSelector((state) => state.isFilmsLoading);
 
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteFilms());
+    }
+  }, [authorizationStatus]);
+
+  const favoriteFilmsNumber = useAppSelector(
+    (state) => state.favoriteFilms
+  ).length;
+
   if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsLoading) {
-    return (
-      <LoadingScreen />
-    );
+    return <LoadingScreen />;
   }
 
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
+          <Route path={AppRoute.Root} element={<WelcomePage />} />
+          <Route path={AppRoute.Login} element={<SignInPage />} />
           <Route
-            path={AppRoute.Root}
+            path={AppRoute.MyList}
             element={
-              <WelcomePage
-                welcomeFilm={welcomeRandomFilm}
-                favoriteFilmsNumber={favoriteBrieflyFilms.length}
-              />
-            }
-          />
-          <Route
-            path={AppRoute.Login}
-            element={<SignInPage />}
-          />
-          <Route path={AppRoute.MyList} element=
-            {
               <PrivateRoute authorizationStatus={authorizationStatus}>
-                <MyListPage favoriteFilmsList = {favoriteBrieflyFilms}/>
+                <MyListPage />
               </PrivateRoute>
             }
           />
-          <Route path={AppRoute.Film} element={
-            <FilmPage
-              filmsInDetailsList={filmsInDetailsList}
-              favoriteFilmsNumber={favoriteBrieflyFilms.length}
-              filmsList={filmsBrieflyList}
-            />
-          }
+          <Route
+            path={AppRoute.Film}
+            element={<FilmPage favoriteFilmsNumber={favoriteFilmsNumber} />}
           />
-          <Route path={AppRoute.Review} element={<AddReviewPage filmsInDetailsList={filmsInDetailsList}/>} />
-          <Route path={AppRoute.Player} element={<PlayerPage filmsForPlay={filmsBrieflyList}/>} />
-          <Route path='*' element={<h1>Ошибка 404. Страница не существует.</h1>} />
-          <Route path='*' element={<NotFoundPage />} />
+          <Route
+            path={AppRoute.Review}
+            element={
+              <PrivateRoute authorizationStatus={authorizationStatus}>
+                <AddReviewPage />
+              </PrivateRoute>
+            }
+          />
+          {/* <Route path={AppRoute.Player} element={<PlayerPage filmsForPlay={filmsBrieflyList}/>} /> */}
+          <Route
+            path="*"
+            element={<h1>Ошибка 404. Страница не существует.</h1>}
+          />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
