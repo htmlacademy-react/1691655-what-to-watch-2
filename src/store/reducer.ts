@@ -15,7 +15,6 @@ type InitialState = {
   showedFilmsNumber: number;
   authorizationStatus: AuthorizationStatus;
   isFilmsLoading: boolean;
-  error: string | null;
   avatarUrl: string | null;
 };
 
@@ -31,7 +30,6 @@ const initialState: InitialState = {
   showedFilmsNumber: Setting.filmCardsNumber,
   authorizationStatus: AuthorizationStatus.Unknown,
   isFilmsLoading: false,
-  error: null,
   avatarUrl: null,
 };
 
@@ -89,10 +87,6 @@ export const reducer = createReducer(initialState, (builder) => {
 
     .addCase(setFilmsDataLoadingStatus, (state, action) => {
       state.isFilmsLoading = action.payload;
-    })
-
-    .addCase(setError, (state, action) => {
-      state.error = action.payload;
     })
 
     .addCase(saveAvatarUrl, (state, action) => {
