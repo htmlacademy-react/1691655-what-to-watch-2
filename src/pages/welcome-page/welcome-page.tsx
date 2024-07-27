@@ -10,11 +10,16 @@ import { APIRoute } from '../../const';
 import { useEffect, useState } from 'react';
 import { createApi } from '../../services/api';
 import { LoginButton } from '../../components/login-button';
+import { getProcessedFilms, getShowedFilmsNumber } from '../../store/app-process/selectors';
+import { getFavoriteFilms, getGenresList } from '../../store/app-data/selectors';
 
 
 function WelcomePage(): JSX.Element {
   const [welcomeRandomFilm, setWelcomeRandomFilm] = useState<FilmInDetails>({} as FilmInDetails);
-  const currentFilms = useAppSelector((state) => state.filmsToShow);
+
+  const currentFilms = useAppSelector(getProcessedFilms);
+  const favoriteFilms = useAppSelector(getFavoriteFilms);
+  const genresList = useAppSelector(getGenresList);
 
   useEffect(() => {
     async function getRandomFilmDetail() {
@@ -30,10 +35,7 @@ function WelcomePage(): JSX.Element {
     }
   }, []);
 
-  const favoriteFilms = useAppSelector((state) => state.favoriteFilms);
-  const genresList = useAppSelector((state) => state.genresList);
-  const showedFilmsNumber = useAppSelector((state) => state.showedFilmsNumber);
-  const totalFilmsNumber = useAppSelector((state) => state.filmsToShow.length);
+  const showedFilmsNumber = useAppSelector(getShowedFilmsNumber);
 
   return (
     <>
@@ -106,7 +108,7 @@ function WelcomePage(): JSX.Element {
 
           <FilmsList filmsList={currentFilms.slice(0, showedFilmsNumber)} />
 
-          {showedFilmsNumber < totalFilmsNumber ? <ShowMoreButton /> : null}
+          {showedFilmsNumber < currentFilms.length ? <ShowMoreButton /> : null}
         </section>
 
         <footer className="page-footer">

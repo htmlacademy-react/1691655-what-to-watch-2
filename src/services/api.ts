@@ -7,7 +7,6 @@ import axios, {
 import { BACKEND_URL, REQUEST_TIMEOUT } from '../const';
 import { getToken } from './token';
 import { StatusCodes } from 'http-status-codes';
-import { processErrorHandle } from './process-error-handle';
 import { toast } from 'react-toastify';
 
 type DetailMessageType = {
@@ -48,7 +47,6 @@ export const createApi = (): AxiosInstance => {
 
         toast.warn(detailMessage.message);
       }
-
       throw error;
     }
   );

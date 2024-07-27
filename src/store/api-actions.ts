@@ -1,54 +1,37 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State } from '../types/store';
+import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
 import { FilmBriefly, FilmComment, FilmInDetails } from '../types/film';
-import { APIRoute, AuthorizationStatus } from '../const';
-import {
-  addComment,
-  loadComments,
-  loadFavoriteFilms,
-  loadFilmDetails,
-  loadFilms,
-  loadSimilarFilms,
-  requireAuthorization,
-  saveAvatarUrl,
-  setFilmsDataLoadingStatus,
-} from './actions';
-import { AuthData } from '../types/auth-data';
-import { UserData } from '../types/user-data';
-import { dropToken, saveToken } from '../services/token';
+import { APIRoute } from '../const';
+import { AuthData, UserData } from '../types/user-data';
+import { addComment, loadFilmDetails } from './actions';
 
 // ЗАПРАШИВАЕТ СПИСОК ФИЛЬМОВ С КРАТКОЙ ИНФОРМАЦИЕЙ
 export const fetchFilms = createAsyncThunk<
-  void,
+  FilmBriefly[],
   undefined,
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchFilms', async (_args, { dispatch, extra: api }) => {
-  // ПОКАЗЫВАЕТ СПИННЕР НА ВРЕМЯ ЗАГРУЗКИ
-  dispatch(setFilmsDataLoadingStatus(true));
+>('data/fetchFilms', async (_args, { extra: api }) => {
   const { data } = await api.get<FilmBriefly[]>(APIRoute.Films);
-  dispatch(setFilmsDataLoadingStatus(false));
 
-  dispatch(loadFilms(data));
+  return data;
 });
 
 // ЗАПРАШИВАЕТ СПИСОК ФИЛЬМОВ К ПРОСМОТРУ
 export const fetchFavoriteFilms = createAsyncThunk<
-  void,
+  FilmBriefly[],
   undefined,
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchFavoriteFilms', async (_args, { dispatch, extra: api }) => {
+>('data/fetchFavoriteFilms', async (_args, { extra: api }) => {
   const { data } = await api.get<FilmBriefly[]>(APIRoute.Favorite);
 
-  dispatch(loadFavoriteFilms(data));
+  return data;
 });
 
 // ЗАПРАШИВАЕТ ДЕТАЛЬНУЮ ИНФОРМАЦИЮ О ФИЛЬМЕ
@@ -56,38 +39,29 @@ export const fetchFilmDetail = createAsyncThunk<
   FilmInDetails,
   string,
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchFilmDetail', async (id: string, { dispatch, extra: api }) => {
-  dispatch(setFilmsDataLoadingStatus(true));
+>('data/fetchFilmDetail', async (id: string, { extra: api }) => {
   const { data } = await api.get<FilmInDetails>(`${APIRoute.Films}/${id}`);
-  dispatch(setFilmsDataLoadingStatus(false));
 
-  // console.log('fetch films details..');
-
-  dispatch(loadFilmDetails(data));
   return data;
 });
 
 // ЗАПРАШИВАЕТ СПИСОК ПОХОЖИХ ФИЛЬМОВ
 export const fetchSimilarFilms = createAsyncThunk<
-  void,
+  FilmBriefly[],
   string,
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchSimilarFilms', async (id: string, { dispatch, extra: api }) => {
-  dispatch(setFilmsDataLoadingStatus(true));
+>('data/fetchSimilarFilms', async (id: string, { extra: api }) => {
   const { data } = await api.get<FilmBriefly[]>(
     `${APIRoute.Films}/${id}/similar`
   );
-  dispatch(setFilmsDataLoadingStatus(false));
 
-  dispatch(loadSimilarFilms(data));
+  return data;
 });
 
 // ИЗМЕНЯЕТ СТАТУС ФИЛЬМА К ПРОСМОТРУ
@@ -115,19 +89,16 @@ export const postFavoriteStatus = createAsyncThunk<
 
 // ЗАПРАШИВАЕТ СПИСОК КОММЕНТАРИЕВ К ФИЛЬМУ
 export const fetchComments = createAsyncThunk<
-  void,
+  FilmComment[],
   string,
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchComments', async (id: string, { dispatch, extra: api }) => {
-  dispatch(setFilmsDataLoadingStatus(true));
+>('data/fetchComments', async (id: string, { extra: api }) => {
   const { data } = await api.get<FilmComment[]>(`${APIRoute.Comments}/${id}`);
-  dispatch(setFilmsDataLoadingStatus(false));
 
-  dispatch(loadComments(data));
+  return data;
 });
 
 // ОТПРАВЛЯЕТ НОВЫЙ КОММЕНТАРИЙ К ФИЛЬМУ
@@ -156,41 +127,41 @@ export const postReview = createAsyncThunk<
 );
 
 export const checkAuth = createAsyncThunk<
-  void,
+  UserData,
   undefined,
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('user/checkAuth', async (_args, { dispatch, extra: api }) => {
-  try {
-    await api.get(APIRoute.Login);
+>('user/checkAuth', async (_args, { extra: api }) => {
+  const { data } = await api.get(APIRoute.Login);
 
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-  } catch {
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-  }
+  return data;
 });
 
 export const loginAction = createAsyncThunk<
-  void,
+  {
+    name: string;
+    token: string | null;
+    avatarUrl: string | null;
+  },
   AuthData,
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
 >(
   'user/login',
-  async ({ login: email, password }, { dispatch, extra: api }) => {
+  async ({ login: email, password }, { extra: api }) => {
     const {
-      data: { token, avatarUrl },
+      data: { name, token, avatarUrl },
     } = await api.post<UserData>(APIRoute.Login, { email, password });
 
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(saveAvatarUrl(avatarUrl));
+    return {
+      name: name,
+      token: token,
+      avatarUrl: avatarUrl,
+    };
   }
 );
 
@@ -198,14 +169,9 @@ export const logoutAction = createAsyncThunk<
   void,
   undefined,
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('user/logout', async (_arg, { dispatch, extra: api }) => {
+>('user/logout', async (_arg, { extra: api }) => {
   await api.delete(APIRoute.Logout);
-  dropToken();
-  dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-  dispatch(saveAvatarUrl(null));
-  dispatch(loadFavoriteFilms([]));
 });

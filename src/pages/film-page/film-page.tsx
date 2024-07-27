@@ -15,6 +15,7 @@ import {
 import { LoginButton } from '../../components/login-button';
 import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
+import { getComments, getCurrentFilm, getSimilarFilms } from '../../store/app-data/selectors';
 
 type FilmPageProps = {
   favoriteFilmsNumber: number;
@@ -23,9 +24,9 @@ type FilmPageProps = {
 function FilmPage({ favoriteFilmsNumber }: FilmPageProps): JSX.Element {
   const { id: filmId } = useParams();
   const dispatch = useAppDispatch();
-  const currentFilm = useAppSelector((state) => state.currentFilmDetails);
-  const currentFilmComments = useAppSelector((state) => state.comments);
-  const sameGenreFilms = useAppSelector((state) => state.similarFilms);
+  const currentFilm = useAppSelector(getCurrentFilm);
+  const currentFilmComments = useAppSelector(getComments);
+  const sameGenreFilms = useAppSelector(getSimilarFilms);
 
   useEffect(() => {
     if (filmId && filmId !== currentFilm.id) {

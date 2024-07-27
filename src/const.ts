@@ -31,6 +31,12 @@ export enum APIRoute {
   Comments = '/comments',
 }
 
+export enum NameSpace {
+  Data = 'DATA',
+  Process = 'PROCESS',
+  User = 'USER',
+}
+
 export const ALL_GENRES = 'All genres';
 export const BACKEND_URL = 'https://13.design.htmlacademy.pro/wtw';
 export const REQUEST_TIMEOUT = 5000;

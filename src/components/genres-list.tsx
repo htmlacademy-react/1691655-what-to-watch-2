@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
-import { store } from '../store';
-import { useAppDispatch } from '../hooks';
-import { changeGenre } from '../store/actions';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { changeGenre } from '../store/app-process/app-process';
+import { getGenre } from '../store/app-process/selectors';
 
 export function GenresList({genresList}: {genresList: string[]}): JSX.Element {
   const dispatch = useAppDispatch();
+  const currentGenre = useAppSelector(getGenre);
+
+  console.log('genresList is: ', genresList);
+  console.log('current genre is: ', currentGenre)
 
   return (
     <ul className="catalog__genres-list">
@@ -13,10 +17,10 @@ export function GenresList({genresList}: {genresList: string[]}): JSX.Element {
           <li key={genre} className="catalog__genres-item">
             <Link
               to="#"
-              className={`catalog__genres-link ${genre === store.getState().genre ? 'catalog__genres-item--active' : ''}`}
+              className={`catalog__genres-link ${genre === currentGenre ? 'catalog__genres-item--active' : ''}`}
               onClick={ (evt) => {
                 if (evt.target instanceof HTMLElement) {
-                  dispatch(changeGenre({ genre: (evt.target).innerText }));
+                  dispatch(changeGenre((evt.target).innerText));
                 }
               }}
             >
