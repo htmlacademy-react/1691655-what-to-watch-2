@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../hooks';
-import { showMoreFilms } from '../store/actions';
+import { showMoreFilms } from '../store/app-process/app-process';
 
 export function ShowMoreButton (): JSX.Element {
   const dispatch = useAppDispatch();

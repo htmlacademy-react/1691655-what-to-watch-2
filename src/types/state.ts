@@ -15,7 +15,6 @@ export type AppData = {
 
 export type AppProcess = {
     genre: string;
-    filmsToShow: FilmBriefly[];
     showedFilmsNumber: number;
 }
 export type UserProcess = {

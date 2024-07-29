@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import FilmsList from '../../components/films-list';
 import { FilmInDetails } from '../../types/film';
 import SvgIcon from '../../components/icon';
 import Logo from '../../components/logo';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GenresList } from '../../components/genres-list';
 import { ShowMoreButton } from '../../components/show-more-button';
 import { APIRoute } from '../../const';
@@ -12,14 +12,21 @@ import { createApi } from '../../services/api';
 import { LoginButton } from '../../components/login-button';
 import { getProcessedFilms, getShowedFilmsNumber } from '../../store/app-process/selectors';
 import { getFavoriteFilms, getGenresList } from '../../store/app-data/selectors';
-
+import { defaultShowedFilmsNumber } from '../../store/app-process/app-process';
 
 function WelcomePage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const [welcomeRandomFilm, setWelcomeRandomFilm] = useState<FilmInDetails>({} as FilmInDetails);
 
   const currentFilms = useAppSelector(getProcessedFilms);
   const favoriteFilms = useAppSelector(getFavoriteFilms);
   const genresList = useAppSelector(getGenresList);
+
+  const {pathname} = useLocation();
+  useEffect(() => {
+    dispatch(defaultShowedFilmsNumber());
+  }, [pathname]);
 
   useEffect(() => {
     async function getRandomFilmDetail() {

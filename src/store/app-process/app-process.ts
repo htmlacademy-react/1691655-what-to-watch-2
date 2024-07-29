@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ALL_GENRES, NameSpace, Setting } from '../../const';
-import { FilmInDetails } from '../../types/film';
 import { AppProcess } from '../../types/state';
 
 const initialState: AppProcess = {
   genre: ALL_GENRES,
-  filmsToShow: [],
   showedFilmsNumber: Setting.filmCardsNumber,
 };
 
@@ -13,15 +11,9 @@ const appProcess = createSlice({
   name: NameSpace.Process,
   initialState,
   reducers: {
+    defaultShowedFilmsNumber: (state) => {state.showedFilmsNumber = Setting.filmCardsNumber},
     showMoreFilms: (state) => {
-      if (
-        state.showedFilmsNumber + Setting.filmCardsNumber <
-        state.filmsToShow.length
-      ) {
-        state.showedFilmsNumber += Setting.filmCardsNumber;
-      } else {
-        state.showedFilmsNumber = state.filmsToShow.length;
-      }
+      state.showedFilmsNumber += Setting.filmCardsNumber;
     },
     changeGenre: (state, action: PayloadAction<string>) => {
       state.showedFilmsNumber = Setting.filmCardsNumber;
@@ -32,4 +24,4 @@ const appProcess = createSlice({
 
 export default appProcess;
 
-export const {changeGenre, showMoreFilms} = appProcess.actions;
+export const {changeGenre, showMoreFilms, defaultShowedFilmsNumber} = appProcess.actions;
