@@ -25,3 +25,6 @@ export const getSimilarFilms = (state: State): FilmBriefly[] =>
 
 export const getComments = (state: State): FilmComment[] =>
   state[NameSpace.Data].reviews;
+
+export const getPromoFilm = (state: State): FilmInDetails =>
+  state[NameSpace.Data].promoFilm;

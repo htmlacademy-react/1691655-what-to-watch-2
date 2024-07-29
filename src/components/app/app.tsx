@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { HelmetProvider } from 'react-helmet-async';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
-import { fetchFavoriteFilms } from '../../store/api-actions';
+import { checkAuth, fetchFavoriteFilms, fetchFilms } from '../../store/api-actions';
 import { useEffect } from 'react';
 import {
   getFavoriteFilms,

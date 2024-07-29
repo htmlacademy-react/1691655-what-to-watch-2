@@ -6,6 +6,7 @@ import {
   fetchFavoriteFilms,
   fetchFilmDetail,
   fetchFilms,
+  fetchPromoFilm,
   fetchSimilarFilms,
 } from '../api-actions';
 import { FilmInDetails } from '../../types/film';
@@ -15,6 +16,7 @@ const initialState: AppData = {
   favoriteFilms: [],
   currentFilmDetails: {} as FilmInDetails,
   similarFilms: [],
+  promoFilm: {} as FilmInDetails,
   reviews: [],
   isFilmsLoading: false,
   genresList: [],
@@ -86,6 +88,20 @@ export const appData = createSlice({
         state.hasError = false;
       })
       .addCase(fetchComments.rejected, (state) => {
+        state.isFilmsLoading = false;
+        state.hasError = true;
+      })
+
+      .addCase(fetchPromoFilm.pending, (state) => {
+        state.isFilmsLoading = true;
+        state.hasError = false;
+      })
+      .addCase(fetchPromoFilm.fulfilled, (state, action) => {
+        state.isFilmsLoading = false;
+        state.promoFilm = action.payload;
+        state.hasError = false;
+      })
+      .addCase(fetchPromoFilm.rejected, (state) => {
         state.isFilmsLoading = false;
         state.hasError = true;
       });

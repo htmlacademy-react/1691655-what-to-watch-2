@@ -6,6 +6,7 @@ export type AppData = {
     allFilms: FilmBriefly[];
     favoriteFilms: FilmBriefly[];
     similarFilms: FilmBriefly[];
+    promoFilm: FilmInDetails;
     currentFilmDetails: FilmInDetails;
     reviews: FilmComment[];
     isFilmsLoading: boolean;

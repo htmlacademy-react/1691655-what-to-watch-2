@@ -64,6 +64,22 @@ export const fetchSimilarFilms = createAsyncThunk<
   return data;
 });
 
+// ЗАПРАШИВАЕТ ПРОМО ФИЛЬМ
+export const fetchPromoFilm = createAsyncThunk<
+  FilmInDetails,
+  undefined,
+  {
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchPromo', async (_args, { extra: api}) => {
+  const { data } = await api.get<FilmInDetails>(APIRoute.Promo);
+
+  console.log('promo film is: ', data);
+  
+  return data;
+})
+
 // ИЗМЕНЯЕТ СТАТУС ФИЛЬМА К ПРОСМОТРУ
 export const postFavoriteStatus = createAsyncThunk<
   void,
