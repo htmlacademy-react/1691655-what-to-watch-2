@@ -26,7 +26,7 @@ export const userProcess = createSlice({
       })
       .addCase(loginAction.fulfilled, (state, action) => {
         const { name, token, avatarUrl } = action.payload;
-        
+
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.login = name;
         state.avatarUrl = avatarUrl;

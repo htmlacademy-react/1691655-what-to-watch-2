@@ -11,7 +11,9 @@ const appProcess = createSlice({
   name: NameSpace.Process,
   initialState,
   reducers: {
-    defaultShowedFilmsNumber: (state) => {state.showedFilmsNumber = Setting.filmCardsNumber},
+    defaultShowedFilmsNumber: (state) => {
+      state.showedFilmsNumber = Setting.filmCardsNumber;
+    },
     showMoreFilms: (state) => {
       state.showedFilmsNumber += Setting.filmCardsNumber;
     },

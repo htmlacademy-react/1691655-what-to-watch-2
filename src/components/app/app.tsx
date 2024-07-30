@@ -10,12 +10,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { HelmetProvider } from 'react-helmet-async';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
-import { checkAuth, fetchFavoriteFilms, fetchFilms } from '../../store/api-actions';
+import { fetchFavoriteFilms } from '../../store/api-actions';
 import { useEffect } from 'react';
-import {
-  getFavoriteFilms,
-  getFilmsLoadingStatus,
-} from '../../store/app-data/selectors';
+import { getFilmsLoadingStatus } from '../../store/app-data/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function App(): JSX.Element {
@@ -23,7 +20,6 @@ function App(): JSX.Element {
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const loadingStatus = useAppSelector(getFilmsLoadingStatus);
-  const favoriteFilmsNumber = useAppSelector(getFavoriteFilms).length;
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -51,7 +47,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Film}
-            element={<FilmPage favoriteFilmsNumber={favoriteFilmsNumber} />}
+            element={<FilmPage />}
           />
           <Route
             path={AppRoute.Review}

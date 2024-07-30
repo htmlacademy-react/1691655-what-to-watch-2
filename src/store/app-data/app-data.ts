@@ -51,6 +51,8 @@ export const appData = createSlice({
       .addCase(fetchFavoriteFilms.fulfilled, (state, action) => {
         state.isFilmsLoading = false;
         state.favoriteFilms = action.payload;
+
+        console.log('fetching fullfilled..', state.favoriteFilms);
       })
       .addCase(fetchFilmDetail.pending, (state) => {
         state.isFilmsLoading = true;

@@ -75,10 +75,8 @@ export const fetchPromoFilm = createAsyncThunk<
 >('data/fetchPromo', async (_args, { extra: api}) => {
   const { data } = await api.get<FilmInDetails>(APIRoute.Promo);
 
-  console.log('promo film is: ', data);
-  
   return data;
-})
+});
 
 // ИЗМЕНЯЕТ СТАТУС ФИЛЬМА К ПРОСМОТРУ
 export const postFavoriteStatus = createAsyncThunk<
@@ -150,7 +148,7 @@ export const checkAuth = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('user/checkAuth', async (_args, { extra: api }) => {
-  const { data } = await api.get(APIRoute.Login);
+  const { data } = await api.get<UserData>(APIRoute.Login);
 
   return data;
 });

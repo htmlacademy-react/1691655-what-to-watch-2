@@ -10,6 +10,7 @@ import { LoginButton } from '../../components/login-button';
 import { getProcessedFilms, getShowedFilmsNumber } from '../../store/app-process/selectors';
 import { getFavoriteFilms, getGenresList, getPromoFilm } from '../../store/app-data/selectors';
 import { defaultShowedFilmsNumber } from '../../store/app-process/app-process';
+import { fetchFavoriteFilms, postFavoriteStatus } from '../../store/api-actions';
 
 function WelcomePage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -25,6 +26,19 @@ function WelcomePage(): JSX.Element {
     dispatch(defaultShowedFilmsNumber());
   }, [pathname]);
 
+  const onClickFavorite = () => {
+    if (promoFilm.id) {
+      dispatch(
+        postFavoriteStatus({
+          id: promoFilm.id,
+          status: promoFilm.isFavorite ? 0 : 1,
+        })
+      );
+      dispatch(fetchFavoriteFilms());
+
+      console.log('favorite click action..');
+    }
+  };
 
   return (
     <>
@@ -72,13 +86,22 @@ function WelcomePage(): JSX.Element {
 
                 <Link
                   className="btn btn--play film-card__button"
-                  to={'/my-list'}
+                  to={{}}
+                  onClick={onClickFavorite}
                 >
-                  <SvgIcon
-                    viewBoxSize={[19, 19]}
-                    iconRes={[19, 20]}
-                    linkHref="#add"
-                  />
+                  {promoFilm.isFavorite ? (
+                    <SvgIcon
+                      viewBoxSize={[19, 19]}
+                      iconRes={[19, 20]}
+                      linkHref="#in-list"
+                    />
+                  ) : (
+                    <SvgIcon
+                      viewBoxSize={[19, 19]}
+                      iconRes={[19, 20]}
+                      linkHref="#add"
+                    />
+                  )}
                   <span>My list</span>
                   <span className="film-card__count">
                     {favoriteFilms.length}
