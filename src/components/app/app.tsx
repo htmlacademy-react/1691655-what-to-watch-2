@@ -12,14 +12,14 @@ import { HelmetProvider } from 'react-helmet-async';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
 import { fetchFavoriteFilms } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { getFilmsLoadingStatus } from '../../store/app-data/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
-  const isFilmsLoading = useAppSelector((state) => state.isFilmsLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const loadingStatus = useAppSelector(getFilmsLoadingStatus);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -27,11 +27,7 @@ function App(): JSX.Element {
     }
   }, [authorizationStatus]);
 
-  const favoriteFilmsNumber = useAppSelector(
-    (state) => state.favoriteFilms
-  ).length;
-
-  if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || loadingStatus) {
     return <LoadingScreen />;
   }
 
@@ -51,7 +47,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Film}
-            element={<FilmPage favoriteFilmsNumber={favoriteFilmsNumber} />}
+            element={<FilmPage />}
           />
           <Route
             path={AppRoute.Review}

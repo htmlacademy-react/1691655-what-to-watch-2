@@ -2,8 +2,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
-import { AuthData } from '../../types/auth-data';
 import { FormEvent, useEffect, useRef } from 'react';
+import { AuthData } from '../../types/user-data';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 const regex =
     /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[a-zA-Z])(?!.*[^ a-zA-Z0-9]).*$/;
@@ -13,7 +14,7 @@ function SignInPage(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const authStatus = useAppSelector(getAuthorizationStatus);
 
   const handlePasswordChange = () => {
     if (passwordRef.current) {

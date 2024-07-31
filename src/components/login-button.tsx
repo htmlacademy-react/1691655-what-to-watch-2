@@ -2,16 +2,18 @@ import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../const';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { logoutAction } from '../store/api-actions';
+import { cleanFavoriteFilms, getAuthorizationStatus, getAvatarUrl } from '../store/user-process/selectors';
 
 export function LoginButton (): JSX.Element {
   const dispatch = useAppDispatch();
 
   const onSignOut = () => {
     dispatch(logoutAction());
+    useAppSelector(cleanFavoriteFilms);
   };
 
-  const isAuth = useAppSelector((state) => state.authorizationStatus) === AuthorizationStatus.Auth;
-  const avatarUrl = useAppSelector((state) => state.avatarUrl);
+  const isAuth = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
+  const avatarUrl = useAppSelector(getAvatarUrl);
 
   return isAuth ?
     <ul className="user-block">
