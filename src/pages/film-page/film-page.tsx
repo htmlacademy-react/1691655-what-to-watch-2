@@ -27,7 +27,7 @@ function FilmPage(): JSX.Element {
       dispatch(fetchSimilarFilms(filmId));
       dispatch(fetchComments(filmId));
     }
-  }, []);
+  }, [filmId]);
 
   if (!currentFilm) {
     return <NotFoundPage />;

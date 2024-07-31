@@ -10,7 +10,7 @@ import { LoginButton } from '../../components/login-button';
 import { getProcessedFilms, getShowedFilmsNumber } from '../../store/app-process/selectors';
 import { getFavoriteFilms, getGenresList, getPromoFilm } from '../../store/app-data/selectors';
 import { defaultShowedFilmsNumber } from '../../store/app-process/app-process';
-import { fetchFavoriteFilms, postFavoriteStatus } from '../../store/api-actions';
+import { fetchFavoriteFilms, fetchPromoFilm, postFavoriteStatus } from '../../store/api-actions';
 
 function WelcomePage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -35,8 +35,7 @@ function WelcomePage(): JSX.Element {
         })
       );
       dispatch(fetchFavoriteFilms());
-
-      console.log('favorite click action..');
+      dispatch(fetchPromoFilm());
     }
   };
 

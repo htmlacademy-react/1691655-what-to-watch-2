@@ -5,7 +5,7 @@ import Logo from "./logo";
 import { getFavoriteFilms } from "../store/app-data/selectors";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { FilmInDetails } from "../types/film";
-import { fetchFavoriteFilms, postFavoriteStatus } from "../store/api-actions";
+import { fetchFavoriteFilms, fetchFilmDetail, postFavoriteStatus } from "../store/api-actions";
 
 type FilmPageHeaderProps = {
   currentFilm: FilmInDetails;
@@ -24,6 +24,7 @@ function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
         })
       );
       dispatch(fetchFavoriteFilms());
+      dispatch(fetchFilmDetail(currentFilm.id));
     }
   };
 

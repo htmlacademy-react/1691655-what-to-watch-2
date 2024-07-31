@@ -29,6 +29,7 @@ export const appData = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+    // СПИСОК ФИЛЬМОВ
       .addCase(fetchFilms.pending, (state) => {
         state.isFilmsLoading = true;
         state.hasError = false;
@@ -44,6 +45,7 @@ export const appData = createSlice({
         state.isFilmsLoading = false;
         state.hasError = true;
       })
+      // СПИСОК ФИЛЬМОВ К ПРОСМОТРУ
       .addCase(fetchFavoriteFilms.pending, (state) => {
         state.isFilmsLoading = true;
         state.hasError = false;
@@ -51,9 +53,8 @@ export const appData = createSlice({
       .addCase(fetchFavoriteFilms.fulfilled, (state, action) => {
         state.isFilmsLoading = false;
         state.favoriteFilms = action.payload;
-
-        console.log('fetching fullfilled..', state.favoriteFilms);
       })
+      // ДЕТАЛЬНАЯ ИНФОРМАЦИЯ О ФИЛЬМЕ
       .addCase(fetchFilmDetail.pending, (state) => {
         state.isFilmsLoading = true;
         state.hasError = false;
@@ -67,6 +68,7 @@ export const appData = createSlice({
         state.isFilmsLoading = false;
         state.hasError = true;
       })
+      // СПИСОК ПОХОЖИХ ФИЛЬМОВ
       .addCase(fetchSimilarFilms.pending, (state) => {
         state.isFilmsLoading = true;
         state.hasError = false;
@@ -80,6 +82,7 @@ export const appData = createSlice({
         state.isFilmsLoading = false;
         state.hasError = true;
       })
+      // СПИСОК КОММЕНТАРИЕВ К ФИЛЬМУ
       .addCase(fetchComments.pending, (state) => {
         state.isFilmsLoading = true;
         state.hasError = false;
@@ -88,12 +91,14 @@ export const appData = createSlice({
         state.isFilmsLoading = false;
         state.reviews = action.payload;
         state.hasError = false;
+
+        console.log('comments after fetching are: ', action.payload);
       })
       .addCase(fetchComments.rejected, (state) => {
         state.isFilmsLoading = false;
         state.hasError = true;
       })
-
+      // ИНФОРМАЦИЯ О ПРОМО ФИЛЬМЕ
       .addCase(fetchPromoFilm.pending, (state) => {
         state.isFilmsLoading = true;
         state.hasError = false;

@@ -4,7 +4,6 @@ import { AxiosInstance } from 'axios';
 import { FilmBriefly, FilmComment, FilmInDetails } from '../types/film';
 import { APIRoute } from '../const';
 import { AuthData, UserData } from '../types/user-data';
-import { addComment, loadFilmDetails } from './actions';
 
 // ЗАПРАШИВАЕТ СПИСОК ФИЛЬМОВ С КРАТКОЙ ИНФОРМАЦИЕЙ
 export const fetchFilms = createAsyncThunk<
@@ -80,24 +79,23 @@ export const fetchPromoFilm = createAsyncThunk<
 
 // ИЗМЕНЯЕТ СТАТУС ФИЛЬМА К ПРОСМОТРУ
 export const postFavoriteStatus = createAsyncThunk<
-  void,
+  FilmInDetails,
   {
     id: string;
     status: number;
   },
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
 >(
   'data/postFavoriteStatus',
-  async ({ id, status }, { dispatch, extra: api }) => {
+  async ({ id, status }, { extra: api }) => {
     const { data } = await api.post<FilmInDetails>(
       `${APIRoute.Favorite}/${id}/${status}`
     );
 
-    dispatch(loadFilmDetails(data));
+    return data;
   }
 );
 
