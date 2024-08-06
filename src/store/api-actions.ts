@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AppDispatch, State } from '../types/state';
+import { State } from '../types/state';
 import { AxiosInstance } from 'axios';
 import { FilmBriefly, FilmComment, FilmInDetails } from '../types/film';
 import { APIRoute } from '../const';
@@ -122,19 +122,16 @@ export const postReview = createAsyncThunk<
     rating: number;
   },
   {
-    dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
 >(
   'data/postReview',
-  async ({ filmId, comment, rating }, { dispatch, extra: api }) => {
-    const { data } = await api.post<FilmComment>(
+  async ({ filmId, comment, rating }, { extra: api }) => {
+    await api.post<FilmComment>(
       `${APIRoute.Comments}/${filmId}`,
       { comment, rating }
     );
-
-    dispatch(addComment(data));
   }
 );
 

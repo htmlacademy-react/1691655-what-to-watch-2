@@ -26,7 +26,11 @@ const initialState: AppData = {
 export const appData = createSlice({
   name: NameSpace.Data,
   initialState,
-  reducers: {},
+  reducers: {
+    cleanFavoriteFilms: (state) => {
+      state.favoriteFilms = [];
+    }
+  },
   extraReducers(builder) {
     builder
     // СПИСОК ФИЛЬМОВ
@@ -91,8 +95,6 @@ export const appData = createSlice({
         state.isFilmsLoading = false;
         state.reviews = action.payload;
         state.hasError = false;
-
-        console.log('comments after fetching are: ', action.payload);
       })
       .addCase(fetchComments.rejected, (state) => {
         state.isFilmsLoading = false;
@@ -114,3 +116,5 @@ export const appData = createSlice({
       });
   },
 });
+
+export const {cleanFavoriteFilms} = appData.actions;

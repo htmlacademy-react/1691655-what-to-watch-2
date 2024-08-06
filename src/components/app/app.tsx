@@ -14,6 +14,7 @@ import { fetchFavoriteFilms } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { getFilmsLoadingStatus } from '../../store/app-data/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import PlayerPage from '../../pages/player-page/player-page';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -57,11 +58,7 @@ function App(): JSX.Element {
               </PrivateRoute>
             }
           />
-          {/* <Route path={AppRoute.Player} element={<PlayerPage filmsForPlay={filmsBrieflyList}/>} /> */}
-          <Route
-            path="*"
-            element={<h1>Ошибка 404. Страница не существует.</h1>}
-          />
+          <Route path={AppRoute.Player} element={<PlayerPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

@@ -6,7 +6,3 @@ export const getAuthorizationStatus = (state: State): AuthorizationStatus =>
 
 export const getAvatarUrl = (state: State): string | null =>
   state[NameSpace.User].avatarUrl;
-
-export const cleanFavoriteFilms = (state: State): void => {
-  state[NameSpace.Data].favoriteFilms = [];
-};

@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 store.dispatch(fetchFilms());
 store.dispatch(checkAuth());
-store.dispatch(fetchPromoFilm())
+store.dispatch(fetchPromoFilm());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import SvgIcon from "./icon";
-import { LoginButton } from "./login-button";
-import Logo from "./logo";
-import { getFavoriteFilms } from "../store/app-data/selectors";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { FilmInDetails } from "../types/film";
-import { fetchFavoriteFilms, fetchFilmDetail, postFavoriteStatus } from "../store/api-actions";
+import { Link } from 'react-router-dom';
+import SvgIcon from './icon';
+import { LoginButton } from './login-button';
+import Logo from './logo';
+import { getFavoriteFilms } from '../store/app-data/selectors';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { FilmInDetails } from '../types/film';
+import { fetchFavoriteFilms, fetchFilmDetail, postFavoriteStatus } from '../store/api-actions';
 
 type FilmPageHeaderProps = {
   currentFilm: FilmInDetails;
