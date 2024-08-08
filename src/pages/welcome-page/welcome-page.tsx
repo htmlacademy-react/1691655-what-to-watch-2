@@ -1,45 +1,49 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import FilmsList from '../../components/films-list';
-import { FilmInDetails } from '../../types/film';
 import SvgIcon from '../../components/icon';
 import Logo from '../../components/logo';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GenresList } from '../../components/genres-list';
 import { ShowMoreButton } from '../../components/show-more-button';
-import { APIRoute } from '../../const';
-import { useEffect, useState } from 'react';
-import { createApi } from '../../services/api';
+import { useEffect } from 'react';
 import { LoginButton } from '../../components/login-button';
-
+import { getProcessedFilms, getShowedFilmsNumber } from '../../store/app-process/selectors';
+import { getFavoriteFilms, getGenresList, getPromoFilm } from '../../store/app-data/selectors';
+import { defaultShowedFilmsNumber } from '../../store/app-process/app-process';
+import { fetchFavoriteFilms, fetchPromoFilm, postFavoriteStatus } from '../../store/api-actions';
 
 function WelcomePage(): JSX.Element {
-  const [welcomeRandomFilm, setWelcomeRandomFilm] = useState<FilmInDetails>({} as FilmInDetails);
-  const currentFilms = useAppSelector((state) => state.filmsToShow);
+  const dispatch = useAppDispatch();
 
+  const currentFilms = useAppSelector(getProcessedFilms);
+  const favoriteFilms = useAppSelector(getFavoriteFilms);
+  const genresList = useAppSelector(getGenresList);
+  const promoFilm = useAppSelector(getPromoFilm);
+  const showedFilmsNumber = useAppSelector(getShowedFilmsNumber);
+
+  const {pathname} = useLocation();
   useEffect(() => {
-    async function getRandomFilmDetail() {
-      const api = createApi();
-      const id = currentFilms[Math.floor(Math.random() * currentFilms.length)].id;
-      const { data } = await api.get<FilmInDetails>(`${APIRoute.Films}/${id}`);
+    dispatch(defaultShowedFilmsNumber());
+  }, [pathname]);
 
-      setWelcomeRandomFilm(data);
+  const onClickFavorite = () => {
+    if (promoFilm.id) {
+      dispatch(
+        postFavoriteStatus({
+          id: promoFilm.id,
+          status: promoFilm.isFavorite ? 0 : 1,
+        })
+      );
+      dispatch(fetchFavoriteFilms());
+      dispatch(fetchPromoFilm());
     }
-
-    if (Object.keys(welcomeRandomFilm).length === 0) {
-      getRandomFilmDetail();
-    }
-  }, []);
-
-  const favoriteFilms = useAppSelector((state) => state.favoriteFilms);
-  const genresList = useAppSelector((state) => state.genresList);
-  const showedFilmsNumber = useAppSelector((state) => state.showedFilmsNumber);
-  const totalFilmsNumber = useAppSelector((state) => state.filmsToShow.length);
+  };
 
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={welcomeRandomFilm.backgroundImage} alt={welcomeRandomFilm.name} />
+          <img src={promoFilm.backgroundImage} alt={promoFilm.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -53,23 +57,23 @@ function WelcomePage(): JSX.Element {
           <div className="film-card__info">
             <div className="film-card__poster">
               <img
-                src={welcomeRandomFilm.posterImage}
-                alt={`${welcomeRandomFilm.name} poster`}
+                src={promoFilm.posterImage}
+                alt={`${promoFilm.name} poster`}
                 width="218"
                 height="327"
               />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{welcomeRandomFilm.name}</h2>
+              <h2 className="film-card__title">{promoFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{welcomeRandomFilm.genre}</span>
-                <span className="film-card__year">{welcomeRandomFilm.released}</span>
+                <span className="film-card__genre">{promoFilm.genre}</span>
+                <span className="film-card__year">{promoFilm.released}</span>
               </p>
               <div className="film-card__buttons">
                 <Link
                   className="btn btn--play film-card__button"
-                  to={`/player/${welcomeRandomFilm.id}`}
+                  to={`/player/${promoFilm.id}`}
                 >
                   <SvgIcon
                     viewBoxSize={[19, 19]}
@@ -81,13 +85,22 @@ function WelcomePage(): JSX.Element {
 
                 <Link
                   className="btn btn--play film-card__button"
-                  to={'/my-list'}
+                  to={{}}
+                  onClick={onClickFavorite}
                 >
-                  <SvgIcon
-                    viewBoxSize={[19, 19]}
-                    iconRes={[19, 20]}
-                    linkHref="#add"
-                  />
+                  {promoFilm.isFavorite ? (
+                    <SvgIcon
+                      viewBoxSize={[19, 19]}
+                      iconRes={[19, 20]}
+                      linkHref="#in-list"
+                    />
+                  ) : (
+                    <SvgIcon
+                      viewBoxSize={[19, 19]}
+                      iconRes={[19, 20]}
+                      linkHref="#add"
+                    />
+                  )}
                   <span>My list</span>
                   <span className="film-card__count">
                     {favoriteFilms.length}
@@ -106,7 +119,7 @@ function WelcomePage(): JSX.Element {
 
           <FilmsList filmsList={currentFilms.slice(0, showedFilmsNumber)} />
 
-          {showedFilmsNumber < totalFilmsNumber ? <ShowMoreButton /> : null}
+          {showedFilmsNumber < currentFilms.length ? <ShowMoreButton /> : null}
         </section>
 
         <footer className="page-footer">

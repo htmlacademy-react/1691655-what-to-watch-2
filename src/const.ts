@@ -26,14 +26,20 @@ export const enum Tabs {
 export enum APIRoute {
   Films = '/films',
   Favorite = '/favorite',
+  Promo = '/promo',
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments',
 }
 
+export enum NameSpace {
+  Data = 'DATA',
+  Process = 'PROCESS',
+  User = 'USER',
+}
+
 export const ALL_GENRES = 'All genres';
 export const BACKEND_URL = 'https://13.design.htmlacademy.pro/wtw';
 export const REQUEST_TIMEOUT = 5000;
-export const TIMEOUT_SHOW_ERROR = 3000;
 export const MAXIMUM_REVIEW_STARS = 10;
 export const MINIMUM_REVIEW_LENGTH = 50;

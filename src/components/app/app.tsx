@@ -12,14 +12,15 @@ import { HelmetProvider } from 'react-helmet-async';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
 import { fetchFavoriteFilms } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { getFilmsLoadingStatus } from '../../store/app-data/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import PlayerPage from '../../pages/player-page/player-page';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
-  const isFilmsLoading = useAppSelector((state) => state.isFilmsLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const loadingStatus = useAppSelector(getFilmsLoadingStatus);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -27,11 +28,7 @@ function App(): JSX.Element {
     }
   }, [authorizationStatus]);
 
-  const favoriteFilmsNumber = useAppSelector(
-    (state) => state.favoriteFilms
-  ).length;
-
-  if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || loadingStatus) {
     return <LoadingScreen />;
   }
 
@@ -51,7 +48,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Film}
-            element={<FilmPage favoriteFilmsNumber={favoriteFilmsNumber} />}
+            element={<FilmPage />}
           />
           <Route
             path={AppRoute.Review}
@@ -61,11 +58,7 @@ function App(): JSX.Element {
               </PrivateRoute>
             }
           />
-          {/* <Route path={AppRoute.Player} element={<PlayerPage filmsForPlay={filmsBrieflyList}/>} /> */}
-          <Route
-            path="*"
-            element={<h1>Ошибка 404. Страница не существует.</h1>}
-          />
+          <Route path={AppRoute.Player} element={<PlayerPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
