@@ -3,9 +3,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { MAXIMUM_REVIEW_STARS, MINIMUM_REVIEW_LENGTH } from '../../const';
-import { postReview } from '../../store/api-actions';
+import { fetchComments, postReview } from '../../store/api-actions';
 import { LoginButton } from '../../components/login-button';
 import Logo from '../../components/logo';
+import { getComments, getCurrentFilm } from '../../store/app-data/selectors';
 
 function AddReviewPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -13,20 +14,20 @@ function AddReviewPage(): JSX.Element {
   const navigate = useNavigate();
   const [starRating, setStarRating] = useState<number>(0);
 
-  const currentFilm = useAppSelector((state) => state.currentFilmDetails);
+  const currentFilm = useAppSelector(getCurrentFilm);
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    dispatch(
+    await dispatch(
       postReview({
         filmId: currentFilm.id,
         comment: textAreaRef.current!.value,
         rating: starRating,
       })
     );
-
     navigate(`/film/${currentFilm.id}`);
+    dispatch(fetchComments(currentFilm.id));
   };
 
   const handleStarChange = (evt: FormEvent<HTMLInputElement>) => {

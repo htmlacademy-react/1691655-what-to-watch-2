@@ -2,11 +2,12 @@ import Logo from '../../components/logo';
 import withVideoPlayer from '../../hocs/with-video-player';
 import FilmCard from '../../components/film-card';
 import { useAppSelector } from '../../hooks';
+import { getFavoriteFilms } from '../../store/app-data/selectors';
 
 const FilmCardWrapped = withVideoPlayer(FilmCard);
 
 function MyListPage(): JSX.Element {
-  const favoriteFilms = useAppSelector((state) => state.favoriteFilms);
+  const favoriteFilms = useAppSelector(getFavoriteFilms);
 
   return (
     <div className="user-page">
