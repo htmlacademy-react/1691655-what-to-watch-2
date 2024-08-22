@@ -8,9 +8,9 @@ import { cleanFavoriteFilms } from '../store/app-data/app-data';
 export function LoginButton (): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const onSignOut = () => {
-    dispatch(logoutAction());
-    dispatch(cleanFavoriteFilms);
+  const onSignOut = async () => {
+    await dispatch(logoutAction());
+    dispatch(cleanFavoriteFilms());
   };
 
   const isAuth = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
@@ -30,7 +30,7 @@ export function LoginButton (): JSX.Element {
       </li>
       <li className="user-block__item">
         <Link
-          onClick={onSignOut}
+          onClick={() => onSignOut}
           to={AppRoute.Root}
           className="user-block__link"
         >

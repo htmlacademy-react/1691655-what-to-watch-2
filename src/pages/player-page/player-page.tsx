@@ -16,8 +16,8 @@ function PlayerPage(): JSX.Element {
   }
 
   const playerRef = useRef<HTMLVideoElement>(null);
-  const [playStatus, setPlayStatus] = useState(true);
-  const [loadingStatus, setLoadingStatus] = useState(true);
+  const [isPlaying, setPlayStatus] = useState(true);
+  const [isLoading, setLoadingStatus] = useState(true);
 
   const [progress, setProgress] = useState(0);
   const [timeLeft, setTimeLeft] = useState(playerRef.current?.duration ?? 0);
@@ -33,7 +33,7 @@ function PlayerPage(): JSX.Element {
 
   const playAndPauseFilm = () => {
     if (playerRef.current) {
-      if (playStatus) {
+      if (isPlaying) {
         playerRef.current.pause();
         setPlayStatus(false);
       } else {
@@ -45,7 +45,7 @@ function PlayerPage(): JSX.Element {
 
   return (
     <div className="player">
-      {loadingStatus && <Spinner />}
+      {isLoading && <Spinner />}
 
       <video
         ref={playerRef}
@@ -87,7 +87,7 @@ function PlayerPage(): JSX.Element {
             className="player__play"
             onClick={playAndPauseFilm}
           >
-            {playStatus ? (
+            {isPlaying ? (
               <svg viewBox="0 0 19 19" width="19" height="19">
                 <use xlinkHref="#pause"></use>
               </svg>

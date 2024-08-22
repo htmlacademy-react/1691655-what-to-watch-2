@@ -20,7 +20,7 @@ function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const loadingStatus = useAppSelector(getFilmsLoadingStatus);
+  const isFilmLoading = useAppSelector(getFilmsLoadingStatus);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -28,7 +28,7 @@ function App(): JSX.Element {
     }
   }, [authorizationStatus]);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || loadingStatus) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isFilmLoading) {
     return <LoadingScreen />;
   }
 

@@ -15,9 +15,9 @@ function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
   const favoriteFilmsNumber = useAppSelector(getFavoriteFilms).length;
 
-  const onClickFavorite = () => {
+  const onClickFavorite = async () => {
     if (currentFilm.id) {
-      dispatch(
+      await dispatch(
         postFavoriteStatus({
           id: currentFilm.id,
           status: currentFilm.isFavorite ? 0 : 1,
@@ -64,7 +64,7 @@ function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
             <Link
               className="btn btn--play film-card__button"
               to={{}}
-              onClick={onClickFavorite}
+              onClick={() => onClickFavorite}
             >
               {currentFilm.isFavorite ? (
                 <SvgIcon
