@@ -10,3 +10,6 @@ export const formatTime = (seconds: number) => {
     .join(':')
     .replace(/\b(\d)\b/g, '0$1');
 };
+
+export const randomIntFromInterval = (a: number, b: number) =>
+  Math.floor(Math.random() * Math.abs(a - b));

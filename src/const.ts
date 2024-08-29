@@ -43,3 +43,4 @@ export const BACKEND_URL = 'https://13.design.htmlacademy.pro/wtw';
 export const REQUEST_TIMEOUT = 5000;
 export const MAXIMUM_REVIEW_STARS = 10;
 export const MINIMUM_REVIEW_LENGTH = 50;
+export const MAX_FILM_LENTH = 10800;
