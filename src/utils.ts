@@ -1,13 +1,12 @@
-export function shuffleArray<T>(arr: T[]): T[] {
-  let currentIndex = arr.length, tempValue, index;
-
-  while (currentIndex) {
-    index = Math.floor(Math.random() * currentIndex--);
-
-    tempValue = arr[currentIndex];
-    arr[currentIndex] = arr[index];
-    arr[index] = tempValue;
+export const formatTime = (seconds: number) => {
+  if (seconds > 3601) {
+    return [seconds / 60 / 60, (seconds / 60) % 60, seconds % 60]
+      .map((el) => Math.floor(el))
+      .join(':')
+      .replace(/\b(\d)\b/g, '0$1');
   }
-
-  return arr;
-}
+  return [(seconds / 60) % 60, seconds % 60]
+    .map((el) => Math.floor(el))
+    .join(':')
+    .replace(/\b(\d)\b/g, '0$1');
+};

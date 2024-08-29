@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import SvgIcon from "./icon";
-import { LoginButton } from "./login-button";
-import Logo from "./logo";
-import { getFavoriteFilms } from "../store/app-data/selectors";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { FilmInDetails } from "../types/film";
-import { fetchFavoriteFilms, fetchFilmDetail, postFavoriteStatus } from "../store/api-actions";
+import { Link } from 'react-router-dom';
+import SvgIcon from './icon';
+import { LoginButton } from './login-button';
+import Logo from './logo';
+import { getFavoriteFilms } from '../store/app-data/selectors';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { FilmInDetails } from '../types/film';
+import { fetchFavoriteFilms, fetchFilmDetail, postFavoriteStatus } from '../store/api-actions';
 
 type FilmPageHeaderProps = {
   currentFilm: FilmInDetails;
@@ -15,9 +15,9 @@ function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
   const favoriteFilmsNumber = useAppSelector(getFavoriteFilms).length;
 
-  const onClickFavorite = () => {
+  const onClickFavorite = async () => {
     if (currentFilm.id) {
-      dispatch(
+      await dispatch(
         postFavoriteStatus({
           id: currentFilm.id,
           status: currentFilm.isFavorite ? 0 : 1,
@@ -64,7 +64,7 @@ function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
             <Link
               className="btn btn--play film-card__button"
               to={{}}
-              onClick={onClickFavorite}
+              onClick={() => onClickFavorite}
             >
               {currentFilm.isFavorite ? (
                 <SvgIcon
