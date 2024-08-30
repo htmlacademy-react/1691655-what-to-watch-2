@@ -1,13 +1,29 @@
 import { FilmInDetails } from '../../types/film';
 
+const getGradeDecription = (grade: number) => {
+  switch(true) {
+    case (grade === 10):
+      return 'Awesome';
+    case (grade >= 8): 
+      return 'Very good';
+    case (grade >= 5):
+      return 'Good';
+    case (grade >= 3):
+      return 'Normal';
+    default:
+      return 'Bad';
+
+  }
+}
+
 function OverviewTab(currentFilm: FilmInDetails): JSX.Element {
   return (
     <>
       <div className="film-rating">
         <div className="film-rating__score">{ currentFilm.rating }</div>
         <p className="film-rating__meta">
-          <span className="film-rating__level">Very good</span>
-          <span className="film-rating__count">250 ratings</span>
+          <span className="film-rating__level">{ getGradeDecription(currentFilm.rating) }</span>
+          <span className="film-rating__count">{ currentFilm.scoresCount } ratings</span>
         </p>
       </div>
 

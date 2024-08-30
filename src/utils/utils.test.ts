@@ -1,12 +1,27 @@
-import { MAX_FILM_LENTH } from '../const';
 import { formatTime } from './utils';
 
 describe('Function: formatTime', () => {
-  it('should return "true" when output format is correct', () => {
-    const seconds = Math.floor(Math.random() * MAX_FILM_LENTH);
-    const leftTimeRegExpr = /^([0][0-9]:)?[0-5][0-9]:[0-5][0-9]$/;
-    const result = leftTimeRegExpr.test(formatTime(seconds));
+  it('should return correct format when duration less than hour', () => {
+    const secondsUnderHour = 3599;
+    const expectedResult = '59:59';
+    const result = formatTime(secondsUnderHour) === expectedResult;
 
     expect(result).toBe(true);
+  });
+
+  it('should return correct format when duration more than hour', () => {
+    const secondsInrHour = 3600;
+    const expectedResult = '01:00:00';
+
+    const result = formatTime(secondsInrHour) === expectedResult;
+
+    expect(result).toBe(true);
+  });
+
+  it('should return correct format when duration out of range', () => {
+    const wrongSeconds = -1;
+
+
+    expect(() => formatTime(wrongSeconds)).toThrow(new Error('wrong input seconds'));
   });
 });
