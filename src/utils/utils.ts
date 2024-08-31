@@ -1,7 +1,7 @@
-import { SECONDS_IN_100_HOURS } from "../const";
+import { SECONDS_IN_100_HOURS } from '../const';
 
 export const formatTime = (seconds: number) => {
-  if (seconds < 0 || seconds >= SECONDS_IN_100_HOURS ) {
+  if (seconds < 0 || seconds >= SECONDS_IN_100_HOURS) {
     throw new Error('wrong input seconds');
   }
   if (seconds > 3599 && seconds < SECONDS_IN_100_HOURS) {

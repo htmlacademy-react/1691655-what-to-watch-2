@@ -8,13 +8,14 @@ export function GenresList({genresList}: {genresList: string[]}): JSX.Element {
   const currentGenre = useAppSelector(getGenre);
 
   return (
-    <ul className="catalog__genres-list">
+    <ul className="catalog__genres-list" data-testid='genres-container'>
       {
         genresList.map((genre) => (
           <li key={genre} className={`catalog__genres-item ${genre === currentGenre ? 'catalog__genres-item--active' : ''}`}>
             <Link
               to="#"
               className="catalog__genres-link"
+              data-testid = 'genre-value'
               onClick={ (evt) => {
                 if (evt.target instanceof HTMLElement) {
                   dispatch(changeGenre((evt.target).innerText));
