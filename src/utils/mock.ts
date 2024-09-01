@@ -2,11 +2,16 @@ import { faker } from '@faker-js/faker';
 import { randomIntFromInterval } from './utils';
 import { MAX_FILM_LENTH } from '../const';
 import { FilmBriefly, FilmInDetails } from '../types/film';
+import { Action, ThunkDispatch } from '@reduxjs/toolkit';
+import { State } from '../types/state';
+import { createApi } from '../services/api';
 
 const MAX_GENRES_NUMBER = 8;
 const MIN_RELEASE_YEAR = 1990;
 const MAX_RELEASE_YEAR = 2024;
 const MAX_ACTORS_NUMBER = 6;
+
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createApi>, Action>;
 
 export const makeFakeBrieflyFilm = (): FilmBriefly => ({
   id: faker.number.int().toString(),
