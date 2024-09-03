@@ -1,6 +1,6 @@
 import { FilmInDetails } from '../../types/film';
 
-const getGradeDecription = (grade: number) => {
+const getGradeDescription = (grade: number) => {
   switch (true) {
     case grade === 10:
       return 'Awesome';
@@ -22,7 +22,7 @@ function OverviewTab(currentFilm: FilmInDetails): JSX.Element {
         <div className="film-rating__score">{currentFilm.rating}</div>
         <p className="film-rating__meta">
           <span className="film-rating__level">
-            {getGradeDecription(currentFilm.rating)}
+            {getGradeDescription(currentFilm.rating)}
           </span>
           <span className="film-rating__count">
             {currentFilm.scoresCount} ratings

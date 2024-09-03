@@ -13,7 +13,7 @@ describe('Comopnent: Sign-In-Page', () => {
     const state = {
       [NameSpace.User]: {
         login: expectedLoginValue,
-        authorizationStatus: AuthorizationStatus.Auth,
+        authorizationStatus: AuthorizationStatus.NoAuth,
         avatarUrl: 'www.asd.com/qwe.jpeg',
       },
     };

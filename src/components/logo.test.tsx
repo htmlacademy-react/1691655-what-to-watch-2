@@ -4,18 +4,11 @@ import { withRouter } from '../utils/mock-components';
 
 describe('Component: Logo', () => {
   it('should render correctly', () => {
-    const logoLetters = ['W', 'T'];
+    const logoString = 'W T W';
     const preparedComponent = withRouter(<Logo />);
 
     render(preparedComponent);
 
-    try {
-      screen
-        .getAllByText(logoLetters[0])
-        .map((el) => expect(el).toBeInTheDocument());
-    } catch {
-      throw new Error('Letter not found');
-    }
-    expect(screen.getByText(logoLetters[1])).toBeInTheDocument();
+    expect(screen.getByRole('link', {name: logoString})).toBeInTheDocument();
   });
 });
