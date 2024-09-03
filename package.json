@@ -24,6 +24,7 @@
     "react-toastify": "10.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "8.4.1",
     "@jedmao/redux-mock-store": "3.0.5",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
@@ -41,11 +42,10 @@
     "eslint-config-htmlacademy": "9.1.1",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-refresh": "0.4.1",
-    "faker": "5.5.3",
     "jsdom": "22.1.0",
     "typescript": "5.0.4",
     "vite": "4.3.9",
-    "vitest": "0.32.2"
+    "vitest": "2.0.5"
   },
   "browserslist": {
     "production": [

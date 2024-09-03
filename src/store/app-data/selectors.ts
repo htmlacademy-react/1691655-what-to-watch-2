@@ -5,7 +5,7 @@ import { State } from '../../types/state';
 export const getFilmsLoadingStatus = (state: State): boolean =>
   state[NameSpace.Data].isFilmsLoading;
 
-export const getAllFilms = (state: State): FilmBriefly[] =>
+export const getAllFilms = (state: Pick<State, NameSpace.Data>): FilmBriefly[] =>
   state[NameSpace.Data].allFilms;
 
 export const getErrorStatus = (state: State): boolean =>

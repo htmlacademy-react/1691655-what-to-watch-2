@@ -4,7 +4,7 @@ import { getCurrentFilm } from '../../store/app-data/selectors';
 import { toast } from 'react-toastify';
 import { SyntheticEvent, useRef, useState } from 'react';
 import Spinner from '../../components/spinner/spinner';
-import { formatTime } from '../../utils';
+import { formatTime } from '../../utils/utils';
 import { AppRoute } from '../../const';
 
 function PlayerPage(): JSX.Element {
