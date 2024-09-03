@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть»
 
 * Студент: [Andrey Vetrov](https://up.htmlacademy.ru/react-individual/2/user/1691655).
-* Наставник: [Глеб Клецков] (https://htmlacademy.ru/profile/id1487865).
+* Наставник: [Евгений Колегов] (https://htmlacademy.ru/profile/idid21780).
 
 ---
 `
