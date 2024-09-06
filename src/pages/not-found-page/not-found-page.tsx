@@ -7,7 +7,7 @@ function NotFoundPage(): JSX.Element {
       <div className="container">
         <b className="not-found__status">404. Page not found</b>
         <br />
-        <Link className="not-found__back-to-main" to="/">Back to main page</Link>
+        <Link to="/" className="not-found__back-to-main">Back to main page</Link>
       </div>
     </main>
   );

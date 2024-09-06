@@ -1,5 +1,4 @@
-import { useParams } from 'react-router-dom';
-import NotFoundPage from '../not-found-page/not-found-page';
+import { useNavigate, useParams } from 'react-router-dom';
 import Logo from '../../components/logo';
 import DescriptionTabsComponent from '../../components/descrptiion-tabs/description-tabs-component';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -13,25 +12,31 @@ import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { getComments, getCurrentFilm, getSimilarFilms } from '../../store/app-data/selectors';
 import FilmPageHeader from '../../components/film-page-header';
+import { AppRoute } from '../../const';
 
 function FilmPage(): JSX.Element {
   const { id: filmId } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const currentFilm = useAppSelector(getCurrentFilm);
   const currentFilmComments = useAppSelector(getComments);
   const sameGenreFilms = useAppSelector(getSimilarFilms);
 
+  console.log('current film is: ', currentFilm);
+
   useEffect(() => {
     if (filmId && filmId !== currentFilm.id) {
       dispatch(fetchFilmDetail(filmId));
+      
+      if (Object.keys(currentFilm).length === 0) {
+        navigate(AppRoute.NotFoundPage);
+        return;
+      }
+
       dispatch(fetchSimilarFilms(filmId));
       dispatch(fetchComments(filmId));
     }
   }, [filmId]);
-
-  if (!currentFilm) {
-    return <NotFoundPage />;
-  }
 
   if (Object.keys(currentFilm).length === 0) {
     return <LoadingScreen />;
@@ -65,7 +70,7 @@ function FilmPage(): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmsList filmsList={sameGenreFilms} />
+          <FilmsList filmsList={sameGenreFilms.slice(0, 4)} />
         </section>
 
         <footer className="page-footer">

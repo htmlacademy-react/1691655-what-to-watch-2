@@ -6,6 +6,8 @@ import { getFavoriteFilms } from '../store/app-data/selectors';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { FilmInDetails } from '../types/film';
 import { fetchFavoriteFilms, fetchFilmDetail, postFavoriteStatus } from '../store/api-actions';
+import { getAuthorizationStatus } from '../store/user-process/selectors';
+import { AuthorizationStatus } from '../const';
 
 type FilmPageHeaderProps = {
   currentFilm: FilmInDetails;
@@ -14,6 +16,7 @@ type FilmPageHeaderProps = {
 function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
   const favoriteFilmsNumber = useAppSelector(getFavoriteFilms).length;
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const onClickFavorite = async () => {
     if (currentFilm.id) {
@@ -85,12 +88,16 @@ function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
                 {favoriteFilmsNumber}
               </span>
             </Link>
-            <Link
-              to={`/film/${currentFilm.id}/review`}
-              className="btn film-card__button"
-            >
-              Add review
-            </Link>
+            {
+              authorizationStatus === AuthorizationStatus.Auth
+              ? <Link
+                  to={`/film/${currentFilm.id}/review`}
+                  className="btn film-card__button"
+                >
+                  Add review
+                </Link>
+              : ''
+            }
           </div>
         </div>
       </div>

@@ -44,6 +44,8 @@ export const fetchFilmDetail = createAsyncThunk<
 >('data/fetchFilmDetail', async (id: string, { extra: api }) => {
   const { data } = await api.get<FilmInDetails>(`${APIRoute.Films}/${id}`);
 
+  console.log('fetched film is: ', data);
+  
   return data;
 });
 

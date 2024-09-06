@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../const';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { logoutAction } from '../store/api-actions';
@@ -7,6 +7,7 @@ import { cleanFavoriteFilms } from '../store/app-data/app-data';
 
 export function LoginButton (): JSX.Element {
   const dispatch = useAppDispatch();
+  const navigate =useNavigate();
 
   const onSignOut = async () => {
     await dispatch(logoutAction());
@@ -25,12 +26,13 @@ export function LoginButton (): JSX.Element {
             alt="User avatar"
             width="63"
             height="63"
+            onClick={() => navigate(AppRoute.MyList)}
           />
         </div>
       </li>
       <li className="user-block__item">
         <Link
-          onClick={() => onSignOut}
+          onClick={() => onSignOut()}
           to={AppRoute.Root}
           className="user-block__link"
         >

@@ -1,6 +1,12 @@
 import { FilmInDetails } from '../../types/film';
 
 function DetailsTab (currentFilm: FilmInDetails): JSX.Element {
+  const getDurationInFormat = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const restMinutes = minutes % 60;
+
+    return `${hours}h ${restMinutes}m`;
+  }
   return (
     <div className="film-card__text film-card__row">
       <div className="film-card__text-col">
@@ -17,7 +23,7 @@ function DetailsTab (currentFilm: FilmInDetails): JSX.Element {
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Run Time</strong>
-          <span className="film-card__details-value">{ currentFilm.runTime }</span>
+          <span className="film-card__details-value">{ getDurationInFormat(currentFilm.runTime) }</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Genre</strong>
