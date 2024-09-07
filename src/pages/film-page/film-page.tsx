@@ -10,7 +10,7 @@ import {
 } from '../../store/api-actions';
 import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { getComments, getCurrentFilm, getSimilarFilms } from '../../store/app-data/selectors';
+import { getComments, getCurrentFilm, getErrorStatus, getSimilarFilms } from '../../store/app-data/selectors';
 import FilmPageHeader from '../../components/film-page-header';
 import { AppRoute } from '../../const';
 
@@ -21,18 +21,15 @@ function FilmPage(): JSX.Element {
   const currentFilm = useAppSelector(getCurrentFilm);
   const currentFilmComments = useAppSelector(getComments);
   const sameGenreFilms = useAppSelector(getSimilarFilms);
-
-  console.log('current film is: ', currentFilm);
+  const errorStatus = useAppSelector(getErrorStatus);
 
   useEffect(() => {
+    if (errorStatus) {
+      navigate(AppRoute.NotFoundPage);
+    };
+
     if (filmId && filmId !== currentFilm.id) {
       dispatch(fetchFilmDetail(filmId));
-      
-      if (Object.keys(currentFilm).length === 0) {
-        navigate(AppRoute.NotFoundPage);
-        return;
-      }
-
       dispatch(fetchSimilarFilms(filmId));
       dispatch(fetchComments(filmId));
     }

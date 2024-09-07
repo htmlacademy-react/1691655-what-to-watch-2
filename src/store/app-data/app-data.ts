@@ -29,6 +29,9 @@ export const appData = createSlice({
   reducers: {
     cleanFavoriteFilms: (state) => {
       state.favoriteFilms = [];
+    },
+    clearError: (state) => {
+      state.hasError = false;
     }
   },
   extraReducers(builder) {
@@ -117,4 +120,4 @@ export const appData = createSlice({
   },
 });
 
-export const {cleanFavoriteFilms} = appData.actions;
+export const {cleanFavoriteFilms, clearError} = appData.actions;

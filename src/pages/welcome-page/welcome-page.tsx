@@ -11,6 +11,7 @@ import { getProcessedFilms, getShowedFilmsNumber } from '../../store/app-process
 import { getFavoriteFilms, getGenresList, getPromoFilm } from '../../store/app-data/selectors';
 import { defaultShowedFilmsNumber } from '../../store/app-process/app-process';
 import { fetchFavoriteFilms, fetchPromoFilm, postFavoriteStatus } from '../../store/api-actions';
+import { clearError } from '../../store/app-data/app-data';
 
 function WelcomePage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -39,6 +40,8 @@ function WelcomePage(): JSX.Element {
     }
   };
 
+  dispatch(clearError());
+  
   return (
     <>
       <section className="film-card">
