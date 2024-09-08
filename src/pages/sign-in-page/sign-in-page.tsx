@@ -1,31 +1,22 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { FormEvent, useEffect, useRef, useState } from 'react';
+
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
-import { FormEvent, useEffect, useRef } from 'react';
 import { AuthData } from '../../types/user-data';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
-const regex =
-    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[a-zA-Z])(?!.*[^ a-zA-Z0-9]).*$/;
+const loginRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const passwordRegex =/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[a-zA-Z])(?!.*[^ a-zA-Z0-9]).*$/;
 
 function SignInPage(): JSX.Element {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authStatus = useAppSelector(getAuthorizationStatus);
-
-  const handlePasswordChange = () => {
-    if (passwordRef.current) {
-      if (!regex.test(passwordRef.current.value)) {
-        passwordRef.current.setCustomValidity('Пароль должен состоять минимум из одной буквы и цифры.');
-
-      } else {
-        passwordRef.current.setCustomValidity('');
-      }
-    }
-  };
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
@@ -33,15 +24,24 @@ function SignInPage(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (
-      loginRef.current !== null &&
-      passwordRef.current !== null &&
-      regex.test(passwordRef.current.value)
-    ) {
-      onSubmit({
-        login: loginRef.current.value,
-        password: passwordRef.current.value,
-      });
+
+    if (passwordRef.current && loginRef.current) {
+      if (!loginRegex.test(loginRef.current.value)) {
+        setErrorMessage(
+          'Введите корректный адрес эл.почты'
+        );
+      } else {
+        if (!passwordRegex.test(passwordRef.current.value)) {
+          setErrorMessage(
+            'Пароль должен состоять минимум из одной буквы и цифры.'
+          );
+        } else {
+          onSubmit({
+            login: loginRef.current.value,
+            password: passwordRef.current.value,
+          });
+        }
+      }
     }
   };
 
@@ -68,10 +68,18 @@ function SignInPage(): JSX.Element {
       <div className="sign-in user-page__content">
         <form
           className="sign-in__form"
+          id="sigh-in-form"
           method="post"
           action=""
           onSubmit={handleSubmit}
         >
+          {errorMessage !== null ? (
+            <div className="sign-in__message">
+              <p>{errorMessage}</p>
+            </div>
+          ) : (
+            ''
+          )}
           <div className="sign-in__fields">
             <div className="sign-in__field">
               <input
@@ -81,7 +89,7 @@ function SignInPage(): JSX.Element {
                 placeholder="Email address"
                 name="user-email"
                 id="user-email"
-                data-testid = "login-element"
+                data-testid="login-element"
               />
               <label
                 className="sign-in__label visually-hidden"
@@ -93,13 +101,13 @@ function SignInPage(): JSX.Element {
             <div className="sign-in__field">
               <input
                 ref={passwordRef}
-                onChange={handlePasswordChange}
                 className="sign-in__input"
                 type="password"
                 placeholder="Password"
                 name="user-password"
                 id="user-password"
-                data-testid = "password-element"
+                data-testid="password-element"
+                onChange={() => setErrorMessage(null)}
               />
               <label
                 className="sign-in__label visually-hidden"
