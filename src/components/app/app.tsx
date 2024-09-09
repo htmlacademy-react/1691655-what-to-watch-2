@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import { HelmetProvider } from 'react-helmet-async';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
-import { fetchFavoriteFilms } from '../../store/api-actions';
+import { checkAuth, fetchFavoriteFilms, fetchFilms, fetchPromoFilm } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { getLoadingStatus } from '../../store/app-data/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
@@ -21,6 +21,12 @@ function App(): JSX.Element {
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLoading = useAppSelector(getLoadingStatus);
+
+  useEffect(() => {
+    dispatch(fetchFilms());
+    dispatch(checkAuth());
+    dispatch(fetchPromoFilm());
+  }, []);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {

@@ -62,6 +62,10 @@ export const appData = createSlice({
         state.isLoading = false;
         state.favoriteFilms = action.payload;
       })
+      .addCase(fetchFavoriteFilms.rejected, (state) => {
+        state.isLoading = false;
+        state.hasError = true;
+      })
       // ДЕТАЛЬНАЯ ИНФОРМАЦИЯ О ФИЛЬМЕ
       .addCase(fetchFilmDetail.pending, (state) => {
         state.isLoading = true;
