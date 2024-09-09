@@ -59,7 +59,7 @@ function PlayerPage(): JSX.Element {
     } else if (document.exitFullscreen) {
       document.exitFullscreen();
     }
-  }
+  };
 
   return (
     <div className="player">
@@ -90,8 +90,7 @@ function PlayerPage(): JSX.Element {
               className="player__progress"
               value={progress}
               max="100"
-            >
-            </progress>
+            />
             <div className="player__toggler" style={{ left: `${progress}%` }}>
               Toggler
             </div>
@@ -118,8 +117,8 @@ function PlayerPage(): JSX.Element {
           </button>
           <div className="player__name">{currentFilm.name}</div>
 
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="player__full-screen"
             onClick={toggleFullScreen}
           >

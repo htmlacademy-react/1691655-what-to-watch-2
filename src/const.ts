@@ -47,3 +47,4 @@ export const MINIMUM_REVIEW_LENGTH = 50;
 export const MAXIMUM_REVIEW_LENGTH = 400;
 export const MAX_FILM_LENTH = 10800;
 export const SECONDS_IN_100_HOURS = 360000;
+export const MAXIMUM_GENRES_NUMBER = 9;

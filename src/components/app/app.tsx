@@ -20,7 +20,7 @@ function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const isFilmLoading = useAppSelector(getLoadingStatus);
+  const isLoading = useAppSelector(getLoadingStatus);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -28,7 +28,7 @@ function App(): JSX.Element {
     }
   }, [authorizationStatus]);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isFilmLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isLoading) {
     return <LoadingScreen />;
   }
 
@@ -46,10 +46,7 @@ function App(): JSX.Element {
               </PrivateRoute>
             }
           />
-          <Route
-            path={AppRoute.Film}
-            element={<FilmPage />}
-          />
+          <Route path={AppRoute.Film} element={<FilmPage />} />
           <Route
             path={AppRoute.Review}
             element={

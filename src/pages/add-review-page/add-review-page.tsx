@@ -105,7 +105,9 @@ function AddReviewPage(): JSX.Element {
       <div className="add-review">
         <form
           action="#"
-          onSubmit={handleSubmit}
+          onSubmit={(evt: FormEvent<HTMLFormElement>) => {
+            void handleSubmit(evt);
+          }}
           className="add-review__form"
           id="add-review-form"
         >

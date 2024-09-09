@@ -71,7 +71,9 @@ function FilmPageHeader({ currentFilm }: FilmPageHeaderProps): JSX.Element {
             <Link
               className="btn btn--play film-card__button"
               to={{}}
-              onClick={() => onClickFavorite()}
+              onClick={() => {
+                void onClickFavorite();
+              }}
             >
               {currentFilm.isFavorite ? (
                 <SvgIcon

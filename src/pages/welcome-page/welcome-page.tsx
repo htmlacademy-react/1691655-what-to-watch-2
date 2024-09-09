@@ -23,6 +23,7 @@ import {
   postFavoriteStatus,
 } from '../../store/api-actions';
 import { clearError } from '../../store/app-data/app-data';
+import { MAXIMUM_GENRES_NUMBER } from '../../const';
 
 function WelcomePage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -53,7 +54,7 @@ function WelcomePage(): JSX.Element {
 
   useEffect(() => {
     dispatch(clearError());
-  }, [])
+  }, []);
 
   return (
     <>
@@ -102,7 +103,9 @@ function WelcomePage(): JSX.Element {
                 <Link
                   className="btn btn--play film-card__button"
                   to={{}}
-                  onClick={() => onClickFavorite()}
+                  onClick={() => {
+                    void onClickFavorite();
+                  }}
                 >
                   {promoFilm.isFavorite ? (
                     <SvgIcon
@@ -131,7 +134,7 @@ function WelcomePage(): JSX.Element {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresList genresList={genresList} />
+          <GenresList genresList={genresList.slice(0, MAXIMUM_GENRES_NUMBER)} />
 
           <FilmsList filmsList={currentFilms.slice(0, showedFilmsNumber)} />
 
