@@ -7,10 +7,21 @@ import { GenresList } from '../../components/genres-list';
 import { ShowMoreButton } from '../../components/show-more-button';
 import { useEffect } from 'react';
 import { LoginButton } from '../../components/login-button';
-import { getProcessedFilms, getShowedFilmsNumber } from '../../store/app-process/selectors';
-import { getFavoriteFilms, getGenresList, getPromoFilm } from '../../store/app-data/selectors';
+import {
+  getProcessedFilms,
+  getShowedFilmsNumber,
+} from '../../store/app-process/selectors';
+import {
+  getFavoriteFilms,
+  getGenresList,
+  getPromoFilm,
+} from '../../store/app-data/selectors';
 import { defaultShowedFilmsNumber } from '../../store/app-process/app-process';
-import { fetchFavoriteFilms, fetchPromoFilm, postFavoriteStatus } from '../../store/api-actions';
+import {
+  fetchFavoriteFilms,
+  fetchPromoFilm,
+  postFavoriteStatus,
+} from '../../store/api-actions';
 import { clearError } from '../../store/app-data/app-data';
 
 function WelcomePage(): JSX.Element {
@@ -22,7 +33,7 @@ function WelcomePage(): JSX.Element {
   const promoFilm = useAppSelector(getPromoFilm);
   const showedFilmsNumber = useAppSelector(getShowedFilmsNumber);
 
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   useEffect(() => {
     dispatch(defaultShowedFilmsNumber());
   }, [pathname]);
@@ -41,7 +52,7 @@ function WelcomePage(): JSX.Element {
   };
 
   dispatch(clearError());
-  
+
   return (
     <>
       <section className="film-card">

@@ -2,11 +2,12 @@ import { NameSpace } from '../../const';
 import { FilmBriefly, FilmComment, FilmInDetails } from '../../types/film';
 import { State } from '../../types/state';
 
-export const getFilmsLoadingStatus = (state: State): boolean => 
-  state[NameSpace.Data].isFilmsLoading;
+export const getLoadingStatus = (state: State): boolean =>
+  state[NameSpace.Data].isLoading;
 
-export const getAllFilms = (state: Pick<State, NameSpace.Data>): FilmBriefly[] =>
-  state[NameSpace.Data].allFilms;
+export const getAllFilms = (
+  state: Pick<State, NameSpace.Data>
+): FilmBriefly[] => state[NameSpace.Data].allFilms;
 
 export const getErrorStatus = (state: State): boolean =>
   state[NameSpace.Data].hasError;

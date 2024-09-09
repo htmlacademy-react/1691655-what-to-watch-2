@@ -7,8 +7,9 @@ import { loginAction } from '../../store/api-actions';
 import { AuthData } from '../../types/user-data';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
-const loginRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const passwordRegex =/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[a-zA-Z])(?!.*[^ a-zA-Z0-9]).*$/;
+const loginRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const passwordRegex =
+  /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[a-zA-Z])(?!.*[^ a-zA-Z0-9]).*$/;
 
 function SignInPage(): JSX.Element {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -27,9 +28,7 @@ function SignInPage(): JSX.Element {
 
     if (passwordRef.current && loginRef.current) {
       if (!loginRegex.test(loginRef.current.value)) {
-        setErrorMessage(
-          'Введите корректный адрес эл.почты'
-        );
+        setErrorMessage('Введите корректный адрес эл.почты');
       } else {
         if (!passwordRegex.test(passwordRef.current.value)) {
           setErrorMessage(

@@ -10,7 +10,12 @@ import {
 } from '../../store/api-actions';
 import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { getComments, getCurrentFilm, getErrorStatus, getSimilarFilms } from '../../store/app-data/selectors';
+import {
+  getComments,
+  getCurrentFilm,
+  getErrorStatus,
+  getSimilarFilms,
+} from '../../store/app-data/selectors';
 import FilmPageHeader from '../../components/film-page-header';
 import { AppRoute } from '../../const';
 
@@ -26,7 +31,7 @@ function FilmPage(): JSX.Element {
   useEffect(() => {
     if (errorStatus) {
       navigate(AppRoute.NotFoundPage);
-    };
+    }
 
     if (filmId && filmId !== currentFilm.id) {
       dispatch(fetchFilmDetail(filmId));

@@ -1,20 +1,22 @@
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { MAXIMUM_REVIEW_STARS, MINIMUM_REVIEW_LENGTH } from '../../const';
+import { MAXIMUM_REVIEW_LENGTH, MAXIMUM_REVIEW_STARS, MINIMUM_REVIEW_LENGTH } from '../../const';
 import { fetchComments, postReview } from '../../store/api-actions';
 import { LoginButton } from '../../components/login-button';
 import Logo from '../../components/logo';
-import { getCurrentFilm } from '../../store/app-data/selectors';
+import { getCurrentFilm, getLoadingStatus } from '../../store/app-data/selectors';
 
 function AddReviewPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const navigate = useNavigate();
   const [starRating, setStarRating] = useState<number>(0);
+  const [reviewTextValidity, setReviewTextValidity] = useState<boolean>(false);
 
   const currentFilm = useAppSelector(getCurrentFilm);
+  const isLoading = useAppSelector(getLoadingStatus);
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -35,11 +37,13 @@ function AddReviewPage(): JSX.Element {
   };
 
   const handleChangeText = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-    if (evt.target.value.length > MINIMUM_REVIEW_LENGTH) {
+    const reviewLength = evt.target.value.length
+    if (reviewLength >= MINIMUM_REVIEW_LENGTH && reviewLength <= MAXIMUM_REVIEW_LENGTH) {
       textAreaRef.current?.setCustomValidity('');
+      setReviewTextValidity(true);
     } else {
       textAreaRef.current?.setCustomValidity(
-        'Отзыв должен состоять из 50 символов минимум'
+        'Отзыв должен состоять из 50 символов минимум и 400 максимум'
       );
     }
   };
@@ -62,9 +66,12 @@ function AddReviewPage(): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">
+                <Link 
+                  className="breadcrumbs__link"
+                  to={`/film/${currentFilm.id}`}
+                >
                   {currentFilm.name}
-                </a>
+                </Link>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>
@@ -86,7 +93,12 @@ function AddReviewPage(): JSX.Element {
       </div>
 
       <div className="add-review">
-        <form action="#" onSubmit={() => handleSubmit} className="add-review__form">
+        <form
+          action="#"
+          onSubmit={handleSubmit}
+          className="add-review__form"
+          id='add-review-form'
+        >
           <div className="rating">
             <div className="rating__stars">
               {Array.from(Array(MAXIMUM_REVIEW_STARS), (el, index) => (
@@ -98,6 +110,7 @@ function AddReviewPage(): JSX.Element {
                     name="rating"
                     value={index + 1}
                     onChange={handleStarChange}
+                    disabled={isLoading}
                   />
                   <label
                     className="rating__label"
@@ -118,10 +131,14 @@ function AddReviewPage(): JSX.Element {
               id="review-text"
               placeholder="Review text"
               onChange={handleChangeText}
-            >
-            </textarea>
+              disabled = {isLoading}
+            ></textarea>
             <div className="add-review__submit">
-              <button className="add-review__btn" type="submit">
+              <button
+                className="add-review__btn"
+                type="submit"
+                disabled={!reviewTextValidity || starRating === 0 || isLoading}
+              >
                 Post
               </button>
             </div>
