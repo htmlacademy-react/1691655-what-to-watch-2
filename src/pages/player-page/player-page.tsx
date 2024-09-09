@@ -43,6 +43,14 @@ function PlayerPage(): JSX.Element {
     }
   };
 
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
   return (
     <div className="player">
       {isLoading && <Spinner />}
@@ -100,7 +108,11 @@ function PlayerPage(): JSX.Element {
           </button>
           <div className="player__name">{currentFilm.name}</div>
 
-          <button type="button" className="player__full-screen">
+          <button 
+            type="button" 
+            className="player__full-screen"
+            onClick={toggleFullScreen}
+          >
             <svg viewBox="0 0 27 27" width="27" height="27">
               <use xlinkHref="#full-screen"></use>
             </svg>

@@ -129,7 +129,7 @@ export const postReview = createAsyncThunk<
   'data/postReview',
   async ({ filmId, comment, rating }, { extra: api }) => {
     await api.post<FilmComment>(
-      `${APIRoute.Comments}/${filmId}a`,
+      `${APIRoute.Comments}/${filmId}`,
       { comment, rating }
     );
   }

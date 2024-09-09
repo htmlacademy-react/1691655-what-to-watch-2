@@ -2,11 +2,18 @@ import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { MAXIMUM_REVIEW_LENGTH, MAXIMUM_REVIEW_STARS, MINIMUM_REVIEW_LENGTH } from '../../const';
+import {
+  MAXIMUM_REVIEW_LENGTH,
+  MAXIMUM_REVIEW_STARS,
+  MINIMUM_REVIEW_LENGTH,
+} from '../../const';
 import { fetchComments, postReview } from '../../store/api-actions';
 import { LoginButton } from '../../components/login-button';
 import Logo from '../../components/logo';
-import { getCurrentFilm, getLoadingStatus } from '../../store/app-data/selectors';
+import {
+  getCurrentFilm,
+  getLoadingStatus,
+} from '../../store/app-data/selectors';
 
 function AddReviewPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -37,8 +44,11 @@ function AddReviewPage(): JSX.Element {
   };
 
   const handleChangeText = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-    const reviewLength = evt.target.value.length
-    if (reviewLength >= MINIMUM_REVIEW_LENGTH && reviewLength <= MAXIMUM_REVIEW_LENGTH) {
+    const reviewLength = evt.target.value.length;
+    if (
+      reviewLength >= MINIMUM_REVIEW_LENGTH &&
+      reviewLength <= MAXIMUM_REVIEW_LENGTH
+    ) {
       textAreaRef.current?.setCustomValidity('');
       setReviewTextValidity(true);
     } else {
@@ -66,7 +76,7 @@ function AddReviewPage(): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <Link 
+                <Link
                   className="breadcrumbs__link"
                   to={`/film/${currentFilm.id}`}
                 >
@@ -97,7 +107,7 @@ function AddReviewPage(): JSX.Element {
           action="#"
           onSubmit={handleSubmit}
           className="add-review__form"
-          id='add-review-form'
+          id="add-review-form"
         >
           <div className="rating">
             <div className="rating__stars">
@@ -131,8 +141,8 @@ function AddReviewPage(): JSX.Element {
               id="review-text"
               placeholder="Review text"
               onChange={handleChangeText}
-              disabled = {isLoading}
-            ></textarea>
+              disabled={isLoading}
+            />
             <div className="add-review__submit">
               <button
                 className="add-review__btn"
