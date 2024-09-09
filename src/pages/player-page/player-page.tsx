@@ -1,19 +1,29 @@
-import { Link, useParams } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
-import { getCurrentFilm } from '../../store/app-data/selectors';
-import { toast } from 'react-toastify';
-import { SyntheticEvent, useRef, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getCurrentFilm, getErrorStatus } from '../../store/app-data/selectors';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import Spinner from '../../components/spinner/spinner';
 import { formatTime } from '../../utils/utils';
 import { AppRoute } from '../../const';
+import { fetchFilmDetail } from '../../store/api-actions';
 
 function PlayerPage(): JSX.Element {
   const { id } = useParams();
-  const currentFilm = useAppSelector(getCurrentFilm);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  if (currentFilm.id !== id) {
-    toast.warn('данный фильм не загружен..');
-  }
+  const currentFilm = useAppSelector(getCurrentFilm);
+  const errorStatus = useAppSelector(getErrorStatus);
+
+  useEffect(() => {
+    if (errorStatus) {
+      navigate(AppRoute.NotFoundPage);
+    }
+
+    if (id && currentFilm.id !== id) {
+      dispatch(fetchFilmDetail(id));
+    }
+  }, [id]);
 
   const playerRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setPlayStatus] = useState(true);

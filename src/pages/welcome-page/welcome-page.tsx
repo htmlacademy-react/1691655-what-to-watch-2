@@ -38,9 +38,9 @@ function WelcomePage(): JSX.Element {
     dispatch(defaultShowedFilmsNumber());
   }, [pathname]);
 
-  const onClickFavorite = () => {
+  const onClickFavorite = async () => {
     if (promoFilm.id) {
-      dispatch(
+      await dispatch(
         postFavoriteStatus({
           id: promoFilm.id,
           status: promoFilm.isFavorite ? 0 : 1,
@@ -51,7 +51,9 @@ function WelcomePage(): JSX.Element {
     }
   };
 
-  dispatch(clearError());
+  useEffect(() => {
+    dispatch(clearError());
+  }, [])
 
   return (
     <>
@@ -100,7 +102,7 @@ function WelcomePage(): JSX.Element {
                 <Link
                   className="btn btn--play film-card__button"
                   to={{}}
-                  onClick={onClickFavorite}
+                  onClick={() => onClickFavorite()}
                 >
                   {promoFilm.isFavorite ? (
                     <SvgIcon
