@@ -1,19 +1,29 @@
-import { Link, useParams } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
-import { getCurrentFilm } from '../../store/app-data/selectors';
-import { toast } from 'react-toastify';
-import { SyntheticEvent, useRef, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getCurrentFilm, getErrorStatus } from '../../store/app-data/selectors';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import Spinner from '../../components/spinner/spinner';
 import { formatTime } from '../../utils/utils';
 import { AppRoute } from '../../const';
+import { fetchFilmDetail } from '../../store/api-actions';
 
 function PlayerPage(): JSX.Element {
   const { id } = useParams();
-  const currentFilm = useAppSelector(getCurrentFilm);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  if (currentFilm.id !== id) {
-    toast.warn('данный фильм не загружен..');
-  }
+  const currentFilm = useAppSelector(getCurrentFilm);
+  const errorStatus = useAppSelector(getErrorStatus);
+
+  useEffect(() => {
+    if (errorStatus) {
+      navigate(AppRoute.NotFoundPage);
+    }
+
+    if (id && currentFilm.id !== id) {
+      dispatch(fetchFilmDetail(id));
+    }
+  }, [id]);
 
   const playerRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setPlayStatus] = useState(true);
@@ -40,6 +50,14 @@ function PlayerPage(): JSX.Element {
         playerRef.current.play();
         setPlayStatus(true);
       }
+    }
+  };
+
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
     }
   };
 
@@ -72,8 +90,7 @@ function PlayerPage(): JSX.Element {
               className="player__progress"
               value={progress}
               max="100"
-            >
-            </progress>
+            />
             <div className="player__toggler" style={{ left: `${progress}%` }}>
               Toggler
             </div>
@@ -100,7 +117,11 @@ function PlayerPage(): JSX.Element {
           </button>
           <div className="player__name">{currentFilm.name}</div>
 
-          <button type="button" className="player__full-screen">
+          <button
+            type="button"
+            className="player__full-screen"
+            onClick={toggleFullScreen}
+          >
             <svg viewBox="0 0 27 27" width="27" height="27">
               <use xlinkHref="#full-screen"></use>
             </svg>

@@ -7,10 +7,23 @@ import { GenresList } from '../../components/genres-list';
 import { ShowMoreButton } from '../../components/show-more-button';
 import { useEffect } from 'react';
 import { LoginButton } from '../../components/login-button';
-import { getProcessedFilms, getShowedFilmsNumber } from '../../store/app-process/selectors';
-import { getFavoriteFilms, getGenresList, getPromoFilm } from '../../store/app-data/selectors';
+import {
+  getProcessedFilms,
+  getShowedFilmsNumber,
+} from '../../store/app-process/selectors';
+import {
+  getFavoriteFilms,
+  getGenresList,
+  getPromoFilm,
+} from '../../store/app-data/selectors';
 import { defaultShowedFilmsNumber } from '../../store/app-process/app-process';
-import { fetchFavoriteFilms, fetchPromoFilm, postFavoriteStatus } from '../../store/api-actions';
+import {
+  fetchFavoriteFilms,
+  fetchPromoFilm,
+  postFavoriteStatus,
+} from '../../store/api-actions';
+import { clearError } from '../../store/app-data/app-data';
+import { MAXIMUM_GENRES_NUMBER } from '../../const';
 
 function WelcomePage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -21,14 +34,14 @@ function WelcomePage(): JSX.Element {
   const promoFilm = useAppSelector(getPromoFilm);
   const showedFilmsNumber = useAppSelector(getShowedFilmsNumber);
 
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   useEffect(() => {
     dispatch(defaultShowedFilmsNumber());
   }, [pathname]);
 
-  const onClickFavorite = () => {
+  const onClickFavorite = async () => {
     if (promoFilm.id) {
-      dispatch(
+      await dispatch(
         postFavoriteStatus({
           id: promoFilm.id,
           status: promoFilm.isFavorite ? 0 : 1,
@@ -38,6 +51,10 @@ function WelcomePage(): JSX.Element {
       dispatch(fetchPromoFilm());
     }
   };
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, []);
 
   return (
     <>
@@ -86,7 +103,9 @@ function WelcomePage(): JSX.Element {
                 <Link
                   className="btn btn--play film-card__button"
                   to={{}}
-                  onClick={onClickFavorite}
+                  onClick={() => {
+                    void onClickFavorite();
+                  }}
                 >
                   {promoFilm.isFavorite ? (
                     <SvgIcon
@@ -115,7 +134,7 @@ function WelcomePage(): JSX.Element {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresList genresList={genresList} />
+          <GenresList genresList={genresList.slice(0, MAXIMUM_GENRES_NUMBER)} />
 
           <FilmsList filmsList={currentFilms.slice(0, showedFilmsNumber)} />
 

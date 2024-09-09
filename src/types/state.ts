@@ -9,7 +9,7 @@ export type AppData = {
     promoFilm: FilmInDetails;
     currentFilmDetails: FilmInDetails;
     reviews: FilmComment[];
-    isFilmsLoading: boolean;
+    isLoading: boolean;
     genresList: string[];
     hasError: boolean;
 }

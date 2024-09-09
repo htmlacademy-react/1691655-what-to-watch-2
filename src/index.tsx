@@ -7,9 +7,9 @@ import { checkAuth, fetchFilms, fetchPromoFilm } from './store/api-actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-store.dispatch(fetchFilms());
-store.dispatch(checkAuth());
-store.dispatch(fetchPromoFilm());
+await store.dispatch(fetchFilms());
+await store.dispatch(checkAuth());
+await store.dispatch(fetchPromoFilm());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

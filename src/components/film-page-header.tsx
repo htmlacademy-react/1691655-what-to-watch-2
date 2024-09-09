@@ -5,15 +5,22 @@ import Logo from './logo';
 import { getFavoriteFilms } from '../store/app-data/selectors';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { FilmInDetails } from '../types/film';
-import { fetchFavoriteFilms, fetchFilmDetail, postFavoriteStatus } from '../store/api-actions';
+import {
+  fetchFavoriteFilms,
+  fetchFilmDetail,
+  postFavoriteStatus,
+} from '../store/api-actions';
+import { getAuthorizationStatus } from '../store/user-process/selectors';
+import { AuthorizationStatus } from '../const';
 
 type FilmPageHeaderProps = {
   currentFilm: FilmInDetails;
-}
+};
 
-function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
+function FilmPageHeader({ currentFilm }: FilmPageHeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
   const favoriteFilmsNumber = useAppSelector(getFavoriteFilms).length;
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const onClickFavorite = async () => {
     if (currentFilm.id) {
@@ -64,7 +71,9 @@ function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
             <Link
               className="btn btn--play film-card__button"
               to={{}}
-              onClick={() => onClickFavorite}
+              onClick={() => {
+                void onClickFavorite();
+              }}
             >
               {currentFilm.isFavorite ? (
                 <SvgIcon
@@ -81,16 +90,18 @@ function FilmPageHeader ({currentFilm}: FilmPageHeaderProps): JSX.Element {
               )}
 
               <span>My list</span>
-              <span className="film-card__count">
-                {favoriteFilmsNumber}
-              </span>
+              <span className="film-card__count">{favoriteFilmsNumber}</span>
             </Link>
-            <Link
-              to={`/film/${currentFilm.id}/review`}
-              className="btn film-card__button"
-            >
-              Add review
-            </Link>
+            {authorizationStatus === AuthorizationStatus.Auth ? (
+              <Link
+                to={`/film/${currentFilm.id}/review`}
+                className="btn film-card__button"
+              >
+                Add review
+              </Link>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </div>
