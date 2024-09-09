@@ -23,7 +23,7 @@ function FilmPage(): JSX.Element {
   const { id: filmId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
+
   const currentFilm = useAppSelector(getCurrentFilm);
   const currentFilmComments = useAppSelector(getComments);
   const sameGenreFilms = useAppSelector(getSimilarFilms);

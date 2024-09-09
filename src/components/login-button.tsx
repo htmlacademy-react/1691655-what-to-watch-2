@@ -36,7 +36,9 @@ export function LoginButton(): JSX.Element {
       </li>
       <li className="user-block__item">
         <Link
-          onClick={() => onSignOut()}
+          onClick={() => {
+            void onSignOut();
+          }}
           to={AppRoute.Root}
           className="user-block__link"
         >
