@@ -1,14 +1,15 @@
+import { ReviewGrades } from '../../const';
 import { FilmInDetails } from '../../types/film';
 
 const getGradeDescription = (grade: number) => {
   switch (true) {
-    case grade === 10:
+    case grade === ReviewGrades.Awesome:
       return 'Awesome';
-    case grade >= 8:
+    case grade >= ReviewGrades.VeryGood:
       return 'Very good';
-    case grade >= 5:
+    case grade >= ReviewGrades.Good:
       return 'Good';
-    case grade >= 3:
+    case grade >= ReviewGrades.Normal:
       return 'Normal';
     default:
       return 'Bad';
