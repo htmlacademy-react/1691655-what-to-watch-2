@@ -39,6 +39,13 @@ export enum NameSpace {
   User = 'USER',
 }
 
+export enum ReviewGrades {
+  Awesome = 10,
+  VeryGood = 8,
+  Good = 5,
+  Normal = 3,
+}
+
 export const ALL_GENRES = 'All genres';
 export const BACKEND_URL = 'https://13.design.htmlacademy.pro/wtw';
 export const REQUEST_TIMEOUT = 5000;
